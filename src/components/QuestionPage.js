@@ -27,9 +27,10 @@ const QuestionPage = () =>{
     const classes = useStyles()
 
     const [questions, setQuestions] = useState([])
-    const [value, setValue] = React.useState('');
-    const [error, setError] = React.useState(false);
-    const [helperText, setHelperText] = React.useState('Choose wisely');
+    const [value, setValue] = React.useState('')
+    const [error, setError] = React.useState(false)
+    const [helperText, setHelperText] = React.useState('Choose wisely')
+    const [answers, setAnswers] = useState([])
 
     
 
@@ -41,7 +42,11 @@ const QuestionPage = () =>{
     const getMovies =(API) => {
         fetch(API).then(res => res.json())
         .then(data => {
-            setQuestions(data.results[0]);
+            setQuestions(data.results[0].question);
+            setAnswers(data.results[0].incorrect_answers)
+           
+            
+            
         })
     }
 
@@ -52,19 +57,20 @@ const QuestionPage = () =>{
       };
 
     console.log(questions)
+    console.log(answers)
+    
 
    
 
     return(
         <form /*onSubmit={handleSubmit}*/>
             <FormControl component="fieldset" error={error} className={classes.formControl}>
-                <FormLabel component="legend">{questions.question}</FormLabel>
+                <FormLabel component="legend">{questions}</FormLabel>
 
                 <RadioGroup aria-label="quiz" name="quiz" value={value} onChange={handleRadioChange}>
-                <FormControlLabel value={questions.incorrect_answers} control={<Radio />} label={questions.incorrect_answers} />
-                <FormControlLabel value={questions.incorrect_answers} control={<Radio />} label={questions.incorrect_answers} />
-                <FormControlLabel value={questions.incorrect_answers} control={<Radio />} label={questions.incorrect_answers} />
-                <FormControlLabel value={questions.correct_answer} control={<Radio />} label={questions.correct_answer} />
+                    {answers.map(answer => (
+                        <FormControlLabel value={answer} control={<Radio />} label={answer} /> 
+                    ))} 
                 </RadioGroup>
 
                 <FormHelperText>{helperText}</FormHelperText>
