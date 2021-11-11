@@ -10,7 +10,7 @@ import FormLabel from '@material-ui/core/FormLabel';
 import Button from '@material-ui/core/Button';
 
 
-const API_URL ="https://opentdb.com/api.php?amount=10&type=multiple"
+const API_URL ="http://localhost:8080/apiquestions"
 
 
 const useStyles = makeStyles((theme) => ({
@@ -27,56 +27,70 @@ const QuestionPage = () =>{
     const classes = useStyles()
 
     const [questions, setQuestions] = useState([])
-    const [value, setValue] = React.useState('')
+    const [answers, setAnswers] = useState([])
+    const [value, setValue] = React.useState([])
     const [error, setError] = React.useState(false)
     const [helperText, setHelperText] = React.useState('Choose wisely')
-    const [answers, setAnswers] = useState([])
 
     
 
     useEffect(() => {
-        getMovies(API_URL)
+        getQuestions(API_URL)
         
     }, [])
 
-    const getMovies =(API) => {
-        fetch(API).then(res => res.json())
+    const getQuestions =(API) => {
+        fetch(API)
+        .then(res => res.json())
         .then(data => {
-            setQuestions(data.results[0].question);
-            setAnswers(data.results[0].incorrect_answers)
+            setQuestions(data)
+              
            
-            
             
         })
     }
 
+
     const handleRadioChange = (event) => {
-        setValue(event.target.value);
+        setValue([...value, event.target.value]);
+        setAnswers({...answers, [event.target.name]: event.target.value})
         setHelperText(' ');
         setError(false);
-      };
+        console.log(answers)
+        console.log(event.target.getAttribute("id"))
+        // console.log(event.target.options[value].getAttribute('data-key'))
+        
+    };
 
-    console.log(questions)
-    console.log(answers)
+    const handleSubmit = () =>{
+        // console.log(answers)
+    }
+
+ 
     
 
    
 
     return(
-        <form /*onSubmit={handleSubmit}*/>
+        <form onSubmit={handleSubmit}>
             <FormControl component="fieldset" error={error} className={classes.formControl}>
-                <FormLabel component="legend">{questions}</FormLabel>
+                {questions.map((question, index) => (
+                    <><FormLabel component="legend" key={question.questionID}>{question.question}</FormLabel>
+                            <RadioGroup aria-label="quiz" name={question.questionID} value={value[index]} onChange={handleRadioChange}>
+                            {question.answers.map((answer) => (
+                            
+                                <FormControlLabel key={answer.answerID} value={answer.answer} 
+                                control={<Radio />} label={answer.answer} />
+                                
+                                ))}
+                            </RadioGroup>
+                    <FormHelperText>{helperText}</FormHelperText>
+                    </>
+                ))}
+                     <Button type="submit" variant="outlined" color="primary" className={classes.button}>
+                         Check Answer
+                     </Button>
 
-                <RadioGroup aria-label="quiz" name="quiz" value={value} onChange={handleRadioChange}>
-                    {answers.map(answer => (
-                        <FormControlLabel value={answer} control={<Radio />} label={answer} /> 
-                    ))} 
-                </RadioGroup>
-
-                <FormHelperText>{helperText}</FormHelperText>
-                <Button type="submit" variant="outlined" color="primary" className={classes.button}>
-                    Check Answer
-                </Button>
             </FormControl>
         </form>
     )
