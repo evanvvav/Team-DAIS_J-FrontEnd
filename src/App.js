@@ -12,7 +12,7 @@ function App() {
   return (
      <div className="container">
       <QuestionPage/>
-      <p>test</p>
+
         
      </div>
   
