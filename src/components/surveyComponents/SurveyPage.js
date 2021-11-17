@@ -26,6 +26,11 @@ const SurveysList = () =>{
         history.push("/editSurvey/"+id);
     }
 
+    const deleteSurvey = (id) =>{
+        alert(id+" survey was deleted")
+        console.log((surveys[0].questions).length)
+    }
+
     const updateSurvey = () => {
 
     }
@@ -35,20 +40,31 @@ const SurveysList = () =>{
         {
             sortable: false,
             filterable: false,
-            width: 100,
+            width: 130,
             accessor: "surveyID",
-            Cell: row => <Button color="secondary" variant="outlined" size="small" onClick={() => startQuestions(row.value)}>Start</Button>
+            Cell: row => <Button color="primary" variant="outlined" size="medium" onClick={() => startQuestions(row.value)}>Start</Button>
         },
         {
            Header: "Name",
            accessor: "surveyDesc"
+        },
+        // {
+        //     Header: "number of questions", ?????????????????????
+        //     accessor: (questions).length
+        // },
+        {
+            sortable: false,
+            filterable: false,
+            width: 100,
+            accessor: "surveyID",
+            Cell: row => <Button color="primary" variant="outlined" size="small" onClick={() => editQuestion(row.value)}>Edit</Button>
         },
         {
             sortable: false,
             filterable: false,
             width: 100,
             accessor: "surveyID",
-            Cell: row => <Button color="secondary" variant="outlined" size="small" onClick={() => editQuestion(row.value)}>Edit</Button>
+            Cell: row => <Button color="secondary" variant="outlined" size="small" onClick={() => deleteSurvey(row.value)}>Delete</Button>
         }
     ]
 

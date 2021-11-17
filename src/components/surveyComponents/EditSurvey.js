@@ -4,7 +4,8 @@ import ReactTable from "react-table";
 import 'react-table/react-table.css';
 import { Button } from "@material-ui/core"
 import { useHistory, useParams } from "react-router";
-import EditQuestion from "./EditQuestion";
+import EditQuestion from "../questionComponents/EditQuestion";
+import Navbar from "../Navbar";
 
 
 
@@ -14,7 +15,6 @@ const API_URL ="http://localhost:8080/apisurveys/"
 
 
 const EditSurvey = ({updateSurvey}) =>{
-    
     const {id} = useParams()
     // const { data: surveys, isPending, error } = useFetch(API_URL+survey.surveyID)
     const [questions, setQuestions] = useState([])
@@ -28,13 +28,17 @@ const EditSurvey = ({updateSurvey}) =>{
         .then(res => res.json())
         .then(data => {
             setQuestions(data.questions)
-      
+           
         })
     }
     
     // const startQuestions = (id) =>{
     //     history.push('/survey/'+id);
     // }
+
+    const deleteQuestion = (id) =>{
+        alert(id+" question was deleted")
+    }
 
 
 
@@ -65,6 +69,13 @@ const EditSurvey = ({updateSurvey}) =>{
         {
             Header: "Answer",
             accessor: "answers[2].answer"
+        },
+        {
+            sortable: false,
+            filterable: false,
+            width: 100,
+            accessor: "questionID",
+            Cell: row => <Button color="secondary" variant="outlined" size="small" onClick={() => deleteQuestion(row.value)}>Delete</Button>
         }
     ]
 

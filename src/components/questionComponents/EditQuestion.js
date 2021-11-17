@@ -64,10 +64,10 @@ export default function EditQuestion({updateSurvey, data }){
                     <TextField
                         autoFocus
                         margin="dense"
-                        name="question123"
+                        name="answer"
                         value={answer.answer}
                         onChange={e => handleInputChange(e)}
-                            label="Question123"
+                            label="Answer"
                             fullWidth
                         /> 
                 ))}

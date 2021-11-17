@@ -52,22 +52,23 @@ const QuestionPage = () =>{
         })
     }
 
-    console.log(questions)
 
     const handleRadioChange = (event) => {
         setValue([...value, event.target.value]);
         setAnswers({...answers, [event.target.name]: event.target.value})
         setHelperText(' ');
         // setError(false);
-        console.log(answers)
-        console.log(event.target.getAttribute("id"))
+        // console.log(answers)
+        // console.log(event.target.getAttribute("id"))
         // console.log(event.target.options[value].getAttribute('data-key'))
         
     };
 
     const handleSubmit = () =>{
-        // console.log(answers)
+        alert("Your answers was: '"+answers[2]+"' and '"+ answers[3]+"'")
     }
+
+    console.log(answers)
 
 
    

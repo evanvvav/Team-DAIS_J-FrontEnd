@@ -10,7 +10,6 @@
   padding: 40px;
   display: flex;
   align-items: center;
-  
   max-width: 100%;
   margin: 0 auto;
   border-bottom: 1px solid #f2f2f2;
@@ -18,9 +17,11 @@
 .navbar h1 {
   color: #f1356d;
 }
-.navbar .links {
-  
-  /* margin-left: auto; */
+.navbar .links{
+  padding-left: 3rem;
+}
+.navbar .login {
+  margin-left: auto;
 }
 .navbar a {
   margin-left: 16px;

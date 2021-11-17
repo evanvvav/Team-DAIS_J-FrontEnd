@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from "react"
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import SurveyPage from "./components/SurveyPage";
-import QuestionPage from "./components/QuestionPage"
+import SurveyPage from "./components/surveyComponents/SurveyPage";
+import QuestionPage from "./components/questionComponents/QuestionPage"
 
 import Navbar from "./components/Navbar";
-import NotFound from "./NotFound"
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import EditSurvey from "./components/EditSurvey";
-import HomePage from "./HomePage"
+import NotFound from "./components/NotFound"
+
+import EditSurvey from "./components/surveyComponents/EditSurvey";
+import HomePage from "./components/HomePage"
+import useFetch from "./components/useFetch";
 
 
 function App() {
+
   return (
     <Router>
       <div className="App">
