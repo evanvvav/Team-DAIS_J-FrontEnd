@@ -8,32 +8,49 @@ import EditSurvey from "./EditSurvey"
 
 
 
-const API_URL ="http://localhost:8080/apisurveys"
+const API_URL ="http://localhost:8080/apisurveys/"
 
 
 
 const SurveysList = () =>{
     
-    const { data: surveys, isPending, error } = useFetch(API_URL)
+    // const { data: surveys, isPending, error } = useFetch(API_URL)
     const history = useHistory();
+    const [surveys, setSurveys] = useState([]);
+
+    useEffect(() => getSurveys(API_URL), []);
+
+    const getSurveys =(API_URL) => {
+        fetch(API_URL)
+        .then(res => res.json())
+        .then(data => {
+            setSurveys(data)
+           
+        })
+    }
 
     
-    const startQuestions = (id) =>{
+    const startSurvey = (id) =>{
         history.push('/survey/'+id);
     }
 
-    const editQuestion = (id)=>{
+    const editSurvey = (id)=>{
         history.push("/editSurvey/"+id);
     }
 
-    const deleteSurvey = (id) =>{
-        alert(id+" survey was deleted")
-        console.log((surveys[0].questions).length)
+    const deleteSurvey = (delete_id) =>{
+        //ask if you are really want to delete
+        if(window.confirm("Are you sure?")){
+            fetch(API_URL+delete_id, {method: "DELETE"})
+            .then(res => getSurveys(API_URL))
+            .catch(err => console.error(err))
+        }
     }
 
     const updateSurvey = () => {
 
     }
+
     
 
     const columns = [
@@ -42,7 +59,7 @@ const SurveysList = () =>{
             filterable: false,
             width: 130,
             accessor: "surveyID",
-            Cell: row => <Button color="primary" variant="outlined" size="medium" onClick={() => startQuestions(row.value)}>Start</Button>
+            Cell: row => <Button color="primary" variant="outlined" size="medium" onClick={() => startSurvey(row.value)}>Start</Button>
         },
         {
            Header: "Name",
@@ -57,7 +74,7 @@ const SurveysList = () =>{
             filterable: false,
             width: 100,
             accessor: "surveyID",
-            Cell: row => <Button color="primary" variant="outlined" size="small" onClick={() => editQuestion(row.value)}>Edit</Button>
+            Cell: row => <Button color="primary" variant="outlined" size="small" onClick={() => editSurvey(row.value)}>Edit</Button>
         },
         {
             sortable: false,
@@ -73,8 +90,8 @@ const SurveysList = () =>{
     return(
         
         <div className="survey-page">
-            { error && <div>{ error }</div> }
-            { isPending && <div>Loading...</div> }
+            {/* { error && <div>{ error }</div> } */}
+            {/* { isPending && <div>Loading...</div> } */}
             <ReactTable filterable={true} data={surveys} columns={columns} style={{ marginTop: 10}}/>
         </div>
         

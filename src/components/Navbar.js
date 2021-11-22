@@ -23,15 +23,6 @@ const Navbar = () => {
           padding: "10px"   
         }}>New Survey</Link>
 
-        <Link to="/createSurvey" style={{ 
-          color: '#f1356d', 
-          backgroundColor: 'white',
-          borderRadius: '8px',
-          fontSize: "20px",
-          border: "2px solid #f1356d",
-          padding: "10px",
-          }}>New Question</Link>
-
         <Link to="/statistics" style={{ 
           color: '#f1356d', 
           backgroundColor: 'white',

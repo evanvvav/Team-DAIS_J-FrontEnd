@@ -11,9 +11,9 @@ import { PinDropSharp } from '@material-ui/icons';
 const API_URL ="http://localhost:8080/apiquestions/"
 
 
-export default function EditQuestion({updateSurvey, data }){
+export default function EditQuestion({updateQuestion, data }){
 
-    const [questions, setQuestions] = React.useState([]);
+    const [questions, setQuestions] = React.useState("");
     const [answers, setAnswers] = React.useState([]);
     const [open, setOpen] = React.useState(false);
     
@@ -31,13 +31,13 @@ export default function EditQuestion({updateSurvey, data }){
     
 
     const handleInputChange = (event) =>{
-        setQuestions({...questions, [event.target.name]: event.target.value })
+        setQuestions(event.target.value)
     }
 
-    // const updateCustomer = () =>{
-    //     updateSurvey(questions, props.customer.links[0].href);
-    //     handleClose();
-    // }
+    const editQuestion = () =>{
+        updateQuestion(questions, data);
+        handleClose();
+    }
 
 
     
@@ -45,7 +45,7 @@ export default function EditQuestion({updateSurvey, data }){
     return(
         <div>
         <Button /*style={{margin: 10}}*/ variant="outlined" color="primary" size="small" onClick={handleClickOpen}>
-            Edit
+            Edit Question
         </Button>
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">Edit Question</DialogTitle>
@@ -60,9 +60,8 @@ export default function EditQuestion({updateSurvey, data }){
                     label="Question"
                     fullWidth
                 />
-                {answers.map((answer)=>(
+                {/* {answers.map((answer)=>(
                     <TextField
-                        autoFocus
                         margin="dense"
                         name="answer"
                         value={answer.answer}
@@ -70,7 +69,7 @@ export default function EditQuestion({updateSurvey, data }){
                             label="Answer"
                             fullWidth
                         /> 
-                ))}
+                ))} */}
                 </DialogContent>
               
                 
@@ -78,9 +77,9 @@ export default function EditQuestion({updateSurvey, data }){
                 <Button onClick={handleClose} color="primary">
                     Cancel
                 </Button>
-                {/* <Button onClick={updateCustomer} color="primary">
+                <Button onClick={editQuestion} color="primary">
                     Save
-                </Button> */}
+                </Button>
             </DialogActions>
         </Dialog>
         </div>

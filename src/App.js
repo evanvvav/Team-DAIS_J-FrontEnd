@@ -10,6 +10,7 @@ import NotFound from "./components/NotFound"
 import EditSurvey from "./components/surveyComponents/EditSurvey";
 import HomePage from "./components/HomePage"
 import useFetch from "./components/useFetch";
+import CreateSurvey from "./components/surveyComponents/CreateSurvey";
 
 
 function App() {
@@ -26,15 +27,12 @@ function App() {
             <Route exact path="/surveyList">
               <SurveyPage />
             </Route>
-            {/* <Route path="/create">
-              <Create />
-            </Route> */}
             <Route path="/survey/:id">
               <QuestionPage />
             </Route>
-            {/* <Route path="/createSurvey">
-              <QuestionPage />
-            </Route> */}
+            <Route path="/createSurvey">
+              <CreateSurvey/>
+            </Route>
             <Route path="/editSurvey/:id">
               <EditSurvey />
             </Route>
