@@ -81,3 +81,8 @@
   border-radius: 8px;
   cursor: pointer;
 }
+
+
+.table td{
+  text-align: center;
+}

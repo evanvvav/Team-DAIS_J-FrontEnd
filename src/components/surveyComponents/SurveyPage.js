@@ -57,9 +57,9 @@ const SurveysList = () =>{
         {
             sortable: false,
             filterable: false,
-            width: 130,
+            width: 110,
             accessor: "surveyID",
-            Cell: row => <Button color="primary" variant="outlined" size="medium" onClick={() => startSurvey(row.value)}>Start</Button>
+            Cell: row => <Button style={{margin: 10}} color="primary" variant="outlined" size="medium" onClick={() => startSurvey(row.value)}>Start</Button>
         },
         {
            Header: "Name",
@@ -74,14 +74,14 @@ const SurveysList = () =>{
             filterable: false,
             width: 100,
             accessor: "surveyID",
-            Cell: row => <Button color="primary" variant="outlined" size="small" onClick={() => editSurvey(row.value)}>Edit</Button>
+            Cell: row => <Button style={{margin: 10}} color="primary" variant="outlined" size="small" onClick={() => editSurvey(row.value)}>Edit</Button>
         },
         {
             sortable: false,
             filterable: false,
             width: 100,
             accessor: "surveyID",
-            Cell: row => <Button color="secondary" variant="outlined" size="small" onClick={() => deleteSurvey(row.value)}>Delete</Button>
+            Cell: row => <Button style={{margin: 10}} color="secondary" variant="outlined" size="small" onClick={() => deleteSurvey(row.value)}>Delete</Button>
         }
     ]
 
