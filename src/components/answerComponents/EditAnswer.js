@@ -5,71 +5,63 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import EditIcon from '@material-ui/icons/Edit';
 
 
+const EditAnswer = ({updateAnswer, data, questionID}) => {
 
-
-const EditSurveyName = ({updateSurveyName, surveyDesc}) => {
-    
-    const [surveyName, setSurveyName] = React.useState("");
+    const [answer, setAnswer] = React.useState("");
     const [open, setOpen] = React.useState(false);
     
     const handleClickOpen = () => {
-        setSurveyName(surveyDesc)
-        setOpen(true);
-        
+        setAnswer(data.answer)
+        setOpen(true)
     };
-
-    const handleInputChange = (event) =>{
-        setSurveyName(event.target.value)
-    }
   
     const handleClose = () => {
         setOpen(false);
     };
 
+    
 
-    const UpdateSurveyName = () =>{
-        updateSurveyName(surveyName)
+    const handleInputChange = (event) =>{
+        setAnswer(event.target.value)
+    }
+
+    const editQuestion = () =>{
+        updateAnswer(answer, data, questionID);
         handleClose();
     }
 
-
-    
-
-    
-    
     return ( 
-        <div>
-        <Button style={{marginLeft: 100}} variant="outlined" color="primary" size="medium" onClick={handleClickOpen}>
-            Edit name
+    <div>
+        <Button variant="outlined" color="primary" size="small" onClick={handleClickOpen}>
+            <EditIcon/>
         </Button>
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title">Edit Survey Name</DialogTitle>
+            <DialogTitle id="form-dialog-title">Edit Question</DialogTitle>
             <DialogContent>
                 <TextField
                     autoFocus
                     margin="dense"
-                    name="surveyDesc"
-                    value={surveyName}
+                    name="answer"
+                    value={answer}
                     onChange={e => handleInputChange(e)}
-                    label="Survey Name"
+                    label="Answer"
                     fullWidth
                 />
-                </DialogContent>
-              
-                
+                </DialogContent>      
             <DialogActions>
                 <Button onClick={handleClose} color="primary">
                     Cancel
                 </Button>
-                <Button onClick={UpdateSurveyName} color="primary">
+                <Button onClick={editQuestion} color="primary">
                     Save
                 </Button>
             </DialogActions>
         </Dialog>
-        </div>
+    </div>
     );
 }
  
-export default EditSurveyName;
+export default EditAnswer;

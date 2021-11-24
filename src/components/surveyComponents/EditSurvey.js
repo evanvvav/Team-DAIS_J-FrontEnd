@@ -9,13 +9,20 @@ import Navbar from "../Navbar";
 import UpdateSurveyName from "./EditSurveyName";
 import CreateQuestion from "../questionComponents/CreateQuestion";
 import EditSurveyName from "./EditSurveyName";
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditAnswer from "../answerComponents/EditAnswer";
+import CreateAnswer from "../answerComponents/CreateAnswer";
+
 
 
 
 
 const API_URL = "http://localhost:8080/apisurveys/"
 const API_URL_QUESTIONS = "http://localhost:8080/apiquestions/"
+const API_URL_ANSWER = "http://localhost:8080/apianswers/"
+
 const API_SAVE_ALL_QUESTIONS = "http://localhost:8080/saveallquestions"
+const API_SAVE_ALL_ANSWERS = "http://localhost:8080/saveallanswers"
 
 
 
@@ -37,7 +44,6 @@ const EditSurvey = ({ updateSurvey }) => {
             .then(data => {
                 setQuestions(data.questions)
                 setSurveyDesc(data.surveyDesc)
-
             })
     }
 
@@ -45,52 +51,77 @@ const EditSurvey = ({ updateSurvey }) => {
     //     history.push('/survey/'+id);
     // }
 
-    const CreateNewQuestions = (questions) => {
-        let answerListBody = []
+    const createNewQuestions = (data) => {
         let questionListBody = []
+        let answers = []
+        
 
-        questions.map((question) => {
-            // questionListTemp.push(questions[i].question)
+        for(let i=0; i<data.length; i++){
             questionListBody.push({
                 "survey": { "surveyID": id },
-                "question": question.question,
-                "questionType": "radio-button question"
+                "question": data[i].question,
+                "questionType" : "radio-button question"
             })
-            // for (let i = 0; i < 3; i++) {
-            //     answerListBody.push({
-            //         "question": { "questionID": 2 },
-            //         "answer": question.answer + i
-            //     })
-            // }
-        })
-
-        console.log(answerListBody)
-
-
-        // console.log(questionListBody)
-        // setQuestionsList(questionListTemp)
-
-
-
+            answers.push(data[i].answer1)
+            answers.push(data[i].answer2)
+            answers.push(data[i].answer3)
+        }
+        //add question/s to DB
         fetch(API_SAVE_ALL_QUESTIONS, {
             method: "POST",
             headers: {
                 'Content-type': 'application/json'
             },
             body: JSON.stringify(questionListBody)
-
         })
-            .then(res => getQuestions(API_URL, id))
-            .catch(err => console.error(err))
-        // console.log(questions.length)
-        // console.log(questions)
-        // setQuestionsList( questions[0].question)
-
-
-
+        
     }
 
 
+    const createAnswers = (data) => {
+        let answersLength = data.length;
+        let answersListBody = []
+        let answerNumber = 0;
+        let questionNumber = 0;
+
+        if(data[0].answer===""){
+            alert("Enter the answer")
+        }
+
+
+        while(answerNumber<answersLength){
+            let freeCellNumber = 3 - questions[questionNumber].answers.length
+            if(freeCellNumber===0){
+                alert("No free cell for answer")
+                break
+            }
+
+            for(let w = 0; w<freeCellNumber; w++){
+                answersListBody.push({
+                    "question": {"questionID": questions[questionNumber].questionID},
+                    "answer": data[answerNumber].answer
+                })
+                answerNumber++
+                if(answerNumber===answersLength || answerNumber > answersLength){
+                    break
+                }
+            }
+            questionNumber++
+        }
+        
+        addAnswersToQusetion(answersListBody)
+        
+    }
+
+    const addAnswersToQusetion = (answers) =>{
+        fetch(API_SAVE_ALL_ANSWERS, {
+            method: "POST",
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(answers)
+        }).then(res => getQuestions(API_URL, id))
+    }
 
     const deleteSurvey = () => {
         //ask if you are really want to delete
@@ -109,7 +140,7 @@ const EditSurvey = ({ updateSurvey }) => {
                 .catch(err => console.error(err))
         }
     }
-
+ 
 
     const updateSurveyName = (newSurveyName) => {
         fetch(API_URL + id, {
@@ -125,8 +156,6 @@ const EditSurvey = ({ updateSurvey }) => {
     }
 
     const updateQuestion = (question, data) => {
-        console.log(questions)
-        console.log(data)
         fetch(API_URL_QUESTIONS + data.questionID, {
             method: "PUT",
             headers: {
@@ -143,27 +172,55 @@ const EditSurvey = ({ updateSurvey }) => {
             .catch(err => console.error(err))
     }
 
-    const i = 0;
+    const updateAnswer = (answer, data, questionID) => {
+        fetch(API_URL_ANSWER + data.answerID, {
+            method: "PUT",
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                "question": {"questionID":questionID},
+                "answer": answer
+            })
+
+        })
+            .then(res => getQuestions(API_URL, id))
+            .catch(err => console.error(err))
+    }
+    
+
 
 
     const columns = [
         {
-            sortable: false,
-            filterable: false,
-            width: 150,
-            Cell: row => <EditQuestion updateQuestion={updateQuestion} data={row.original} />
-        },
-        {
             Header: "Question",
             accessor: "question"
+        },
+        {
+            sortable: false,
+            filterable: false,
+            width: 75,
+            Cell: row => <EditQuestion updateQuestion={updateQuestion} data={row.original} />
         },
         {
             Header: "Answer",
             accessor: "answers[0].answer"
         },
         {
+            sortable: false,
+            filterable: false,
+            width: 75,
+            Cell: row => <EditAnswer updateAnswer={updateAnswer} data={row.original.answers[0]} questionID={row.original.questionID} />
+        },
+        {
             Header: "Answer",
             accessor: "answers[1].answer"
+        },
+        {
+            sortable: false,
+            filterable: false,
+            width: 75,
+            Cell: row => <EditAnswer updateAnswer={updateAnswer} data={row.original.answers[1]} questionID={row.original.questionID}/>
         },
         {
             Header: "Answer",
@@ -172,9 +229,15 @@ const EditSurvey = ({ updateSurvey }) => {
         {
             sortable: false,
             filterable: false,
-            width: 100,
+            width: 75,
+            Cell: row => <EditAnswer updateAnswer={updateAnswer} data={row.original.answers[2]} questionID={row.original.questionID}/>
+        },
+        {
+            sortable: false,
+            filterable: false,
+            width: 75,
             accessor: "questionID",
-            Cell: row => <Button color="secondary" variant="outlined" size="small" onClick={() => deleteQuestion(row.value)}>Delete</Button>
+            Cell: row => <Button color="secondary" variant="outlined" size="small" onClick={() => deleteQuestion(row.value)}><DeleteIcon/></Button>
         }
     ]
 
@@ -184,10 +247,11 @@ const EditSurvey = ({ updateSurvey }) => {
 
         <div className="edit-survey-page">
             <div className="edit-survey-page-header" style={{ display: "flex", alignItems: "center", justifyContent: "center", paddingBottom: "20px" }}>
-                <CreateQuestion CreateNewQuestions={CreateNewQuestions} />
+                <CreateQuestion createNewQuestions={createNewQuestions} />
+                <CreateAnswer createAnswers={createAnswers}/>
                 <h2>{surveyDesc}</h2>
                 <EditSurveyName updateSurveyName={updateSurveyName} surveyDesc={surveyDesc} />
-                <Button color="secondary" variant="outlined" size="small" onClick={() => deleteSurvey()}>Delete survey</Button>
+                <Button color="secondary" variant="outlined" size="medium" onClick={() => deleteSurvey()}>Delete survey</Button>
             </div>
             {/* { error && <div>{ error }</div> } */}
             {/* { isPending && <div>Loading...</div> } */}

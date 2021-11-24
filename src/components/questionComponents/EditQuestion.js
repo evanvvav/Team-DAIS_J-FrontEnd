@@ -6,22 +6,20 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { PinDropSharp } from '@material-ui/icons';
+// import { SvgIcon } from '@material-ui/core';
+// import EditIcon from '@mui/icons-material/Edit';
+import EditIcon from '@material-ui/icons/Edit';
 
-const API_URL ="http://localhost:8080/apiquestions/"
 
 
 export default function EditQuestion({updateQuestion, data }){
 
     const [questions, setQuestions] = React.useState("");
-    const [answers, setAnswers] = React.useState([]);
     const [open, setOpen] = React.useState(false);
     
     const handleClickOpen = () => {
         setQuestions(data.question)
-        setAnswers(data.answers)
-        setOpen(true);
-        
+        setOpen(true)
     };
   
     const handleClose = () => {
@@ -44,8 +42,8 @@ export default function EditQuestion({updateQuestion, data }){
 
     return(
         <div>
-        <Button /*style={{margin: 10}}*/ variant="outlined" color="primary" size="small" onClick={handleClickOpen}>
-            Edit Question
+        <Button variant="outlined" color="primary" size="small" onClick={handleClickOpen}>
+            <EditIcon/>
         </Button>
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">Edit Question</DialogTitle>
@@ -60,19 +58,7 @@ export default function EditQuestion({updateQuestion, data }){
                     label="Question"
                     fullWidth
                 />
-                {/* {answers.map((answer)=>(
-                    <TextField
-                        margin="dense"
-                        name="answer"
-                        value={answer.answer}
-                        onChange={e => handleInputChange(e)}
-                            label="Answer"
-                            fullWidth
-                        /> 
-                ))} */}
-                </DialogContent>
-              
-                
+                </DialogContent>      
             <DialogActions>
                 <Button onClick={handleClose} color="primary">
                     Cancel

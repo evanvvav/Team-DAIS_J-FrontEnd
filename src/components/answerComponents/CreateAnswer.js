@@ -10,12 +10,12 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 
-const CreateQuestion = ({ CreateNewQuestions }) => {
+const CreateAnswer= ({ createAnswers }) => {
 
     // const [surveyName, setSurveyName] = React.useState([]);
     const [open, setOpen] = React.useState(false);
     const [inputFields, setInputFields] = React.useState([
-        { id: uuidv4(), question: '' }]);
+        { id: uuidv4(), answer: '' }]);
 
 
 
@@ -45,7 +45,7 @@ const CreateQuestion = ({ CreateNewQuestions }) => {
 
 
     const handleAddFields = () => {
-        setInputFields([...inputFields, { id: uuidv4(), question: ''}])
+        setInputFields([...inputFields, { id: uuidv4(), answer: ''}])
     }
 
     const handleRemoveFields = id => {
@@ -55,7 +55,7 @@ const CreateQuestion = ({ CreateNewQuestions }) => {
     }
 
     const CreateNewQuestion = () => {
-        CreateNewQuestions(inputFields);
+        createAnswers(inputFields);
         setOpen(false)
         // setInputFields([])
     }
@@ -64,22 +64,27 @@ const CreateQuestion = ({ CreateNewQuestions }) => {
 
     return (
         <div>
-            <Button  variant="outlined" color="primary" size="medium" onClick={handleClickOpen} >
-                Create New Question/s
+            <Button style={{ marginRight: 100 }} variant="outlined" color="primary" size="medium" onClick={handleClickOpen} >
+                Create Answer/s
             </Button>
 
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                <DialogTitle id="form-dialog-title">Create New Question</DialogTitle>
+                <DialogTitle id="form-dialog-title" style={{display: "flex"}}>
+                    <h2 style={{color: "red"}}>ATTENTION</h2>
+                    <p>Enter all answers. They will be added to the first free cells in turn.</p>
+                
+                
+                </DialogTitle>
                 <DialogContent>
                     {inputFields.map(inputField => (
                         <div key={inputField.id}>
                             <TextField
                                 autoFocus
                                 margin="dense"
-                                name="question"
-                                value={inputField.question}
+                                name="answer"
+                                value={inputField.answer}
                                 onChange={event => handleInputChange(inputField.id, event)}
-                                label="Question name"
+                                label="Answer"
                                 fullWidth
                             />
                            
@@ -103,4 +108,4 @@ const CreateQuestion = ({ CreateNewQuestions }) => {
     );
 }
 
-export default CreateQuestion;
+export default CreateAnswer;
