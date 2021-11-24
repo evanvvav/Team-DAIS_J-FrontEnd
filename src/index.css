@@ -37,6 +37,64 @@
   padding: 20px;
 }
 
+/* survey previews / list */
+.survey-list{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+
+.survey-preview {
+  min-width: 20rem;
+  min-height: 15rem;
+  padding: 10px 16px;
+  margin: 20px 15px;
+  border-bottom: 1px solid #fafafa;
+}
+
+.survey-preview-link{
+  min-height: 150px;
+}
+
+.survey-preview:hover {
+  box-shadow: 1px 3px 5px rgba(0,0,0,0.1);
+}
+.survey-preview h2 {
+  font-size: 20px;
+  color: #f1356d;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+.survey-preview a{
+  text-decoration: none;
+}
+.survey-preview button {
+  background: #f1356d;
+  color: #fff;
+  border: 0;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* survey details page */
+.blog-details h2 {
+  font-size: 20px;
+  color: #f1356d;
+  margin-bottom: 10px;
+}
+.blog-details div {
+  margin: 20px 0;
+}
+.blog-details button {
+  background: #f1356d;
+  color: #fff;
+  border: 0;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
 
 
 
@@ -50,7 +108,7 @@
 
 
 
-/* create new blog form */
+/* create new survey form */
 .create {
   max-width: 400px;
   margin: 0 auto;
@@ -81,6 +139,11 @@
   border-radius: 8px;
   cursor: pointer;
 }
+
+
+
+
+
 
 
 .table td{

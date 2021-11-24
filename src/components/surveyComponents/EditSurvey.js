@@ -47,9 +47,6 @@ const EditSurvey = ({ updateSurvey }) => {
             })
     }
 
-    // const startQuestions = (id) =>{
-    //     history.push('/survey/'+id);
-    // }
 
     const createNewQuestions = (data) => {
         let questionListBody = []
@@ -73,7 +70,8 @@ const EditSurvey = ({ updateSurvey }) => {
                 'Content-type': 'application/json'
             },
             body: JSON.stringify(questionListBody)
-        })
+        }).then(res => getQuestions(API_URL, id))
+        
         
     }
 

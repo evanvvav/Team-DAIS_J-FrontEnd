@@ -10,7 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 
-const CreateQuestion = ({ CreateNewQuestions }) => {
+const CreateQuestion = ({ createNewQuestions }) => {
 
     // const [surveyName, setSurveyName] = React.useState([]);
     const [open, setOpen] = React.useState(false);
@@ -48,14 +48,14 @@ const CreateQuestion = ({ CreateNewQuestions }) => {
         setInputFields([...inputFields, { id: uuidv4(), question: ''}])
     }
 
-    const handleRemoveFields = id => {
+    const handleRemoveFields = (id) => {
         const values = [...inputFields];
         values.splice(values.findIndex(value => value.id === id), 1);
         setInputFields(values);
     }
 
     const CreateNewQuestion = () => {
-        CreateNewQuestions(inputFields);
+        createNewQuestions(inputFields);
         setOpen(false)
         // setInputFields([])
     }

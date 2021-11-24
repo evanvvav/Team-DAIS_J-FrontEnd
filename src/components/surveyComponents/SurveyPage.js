@@ -65,10 +65,10 @@ const SurveysList = () =>{
            Header: "Name",
            accessor: "surveyDesc"
         },
-        // {
-        //     Header: "number of questions", ?????????????????????
-        //     accessor: (questions).length
-        // },
+        {
+            Header: "number of questions",
+            accessor: "questions.length"
+        },
         {
             sortable: false,
             filterable: false,
@@ -92,7 +92,7 @@ const SurveysList = () =>{
         <div className="survey-page">
             {/* { error && <div>{ error }</div> } */}
             {/* { isPending && <div>Loading...</div> } */}
-            <ReactTable filterable={true} data={surveys} columns={columns} style={{ marginTop: 10}}/>
+            <ReactTable filterable={true} data={surveys} columns={columns} style={{ marginTop: 10, textAlign: "center" }}/>
         </div>
         
     )

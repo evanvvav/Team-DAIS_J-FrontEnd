@@ -13,6 +13,7 @@ import useFetch from "../useFetch";
 
 
 const API_URL ="http://localhost:8080/apisurveys/"
+const API_SAVE_ANSWERS = "http://localhost:8080/apiuseranswers/"
 
 
 const useStyles = makeStyles((theme) => ({
@@ -25,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 
-const QuestionPage = () =>{
+const StartSurvey = () =>{
     const classes = useStyles()
 
     const {id} = useParams()
@@ -34,6 +35,7 @@ const QuestionPage = () =>{
     
     const [questions, setQuestions] = useState([])
     const [answers, setAnswers] = useState([])
+    const [answers2, setAnswers2] = useState([])
     const [value, setValue] = React.useState([])
     const [error, setError] = React.useState(false)
     const [helperText, setHelperText] = React.useState('Choose wisely')
@@ -57,24 +59,51 @@ const QuestionPage = () =>{
         setValue([...value, event.target.value]);
         setAnswers({...answers, [event.target.name]: event.target.value})
         setHelperText(' ');
-        // setError(false);
-        // console.log(answers)
-        // console.log(event.target.getAttribute("id"))
-        // console.log(event.target.options[value].getAttribute('data-key'))
+
         
     };
 
-    const handleSubmit = () =>{
-        alert("Your answers was: '"+answers[2]+"' and '"+ answers[3]+"'")
+    const handleSubmit = () => { 
+        let allQusetionId = []
+        let answersBody = []
+
+        questions.map((question)=>{
+            allQusetionId.push(question.questionID)
+        })
+         
+        for(let i=0; i<allQusetionId.length; i++){
+            answersBody.push({
+                "answer": {"answerID": getAnswerId(answers[allQusetionId[i]])}
+            })
+        }
+        alert(answersBody)
+
+        fetch(API_SAVE_ANSWERS, {
+            method: "POST",
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(answersBody)
+        })
     }
-
-    console.log(answers)
-
-
-   
- 
+    
     
 
+
+    const getAnswerId = (string) => {
+        let id = 0;
+        questions.map((question) => {
+            question.answers.map((answer)=>{
+                if(answer.answer===string){
+                    id = answer.answerID
+                }
+            })
+        })
+        return id
+    }
+ 
+    
+    
    
 
     return(
@@ -103,4 +132,4 @@ const QuestionPage = () =>{
     )
 }
 
-export default QuestionPage;
+export default StartSurvey;
