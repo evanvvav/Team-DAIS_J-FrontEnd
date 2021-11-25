@@ -12,27 +12,27 @@ import { useParams } from "react-router";
 import useFetch from "../useFetch";
 
 
-const API_URL ="http://localhost:8080/apisurveys/"
-const API_SAVE_ANSWERS = "http://localhost:8080/apiuseranswers/"
+const API_URL = "http://localhost:8080/apisurveys/"
+const API_SAVE_ALL_ANSWERS = "http://localhost:8080/savealluseranswers/"
 
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
-      margin: theme.spacing(3),
+        margin: theme.spacing(3),
     },
     button: {
-      margin: theme.spacing(1, 1, 0, 0),
+        margin: theme.spacing(1, 1, 0, 0),
     },
-  }));
+}));
 
 
-const StartSurvey = () =>{
+const StartSurvey = () => {
     const classes = useStyles()
 
-    const {id} = useParams()
+    const { id } = useParams()
     // const { data, isPending, error } = useFetch(API_URL+id) ??????????????????????????
 
-    
+
     const [questions, setQuestions] = useState([])
     const [answers, setAnswers] = useState([])
     const [answers2, setAnswers2] = useState([])
@@ -40,45 +40,46 @@ const StartSurvey = () =>{
     const [error, setError] = React.useState(false)
     const [helperText, setHelperText] = React.useState('Choose wisely')
 
-    
-   
+
+
 
     useEffect(() => getQuestions(API_URL, id), []);
 
-    const getQuestions =(API_URL, id) => {
-        fetch(API_URL+id)
-        .then(res => res.json())
-        .then(data => {
-            setQuestions(data.questions)
-      
-        })
+    const getQuestions = (API_URL, id) => {
+        fetch(API_URL + id)
+            .then(res => res.json())
+            .then(data => {
+                setQuestions(data.questions)
+
+            })
     }
 
 
     const handleRadioChange = (event) => {
         setValue([...value, event.target.value]);
-        setAnswers({...answers, [event.target.name]: event.target.value})
+        setAnswers({ ...answers, [event.target.name]: event.target.value })
         setHelperText(' ');
 
-        
+
     };
 
-    const handleSubmit = () => { 
+    const handleSubmit = () => {
         let allQusetionId = []
         let answersBody = []
 
-        questions.map((question)=>{
+        questions.map((question) => {
             allQusetionId.push(question.questionID)
         })
-         
-        for(let i=0; i<allQusetionId.length; i++){
+
+        for (let i = 0; i < allQusetionId.length; i++) {
             answersBody.push({
-                "answer": {"answerID": getAnswerId(answers[allQusetionId[i]])}
+                "answer": { "answerID": getAnswerId(answers[allQusetionId[i]]) },
+                "user": { "userID": 12 }
             })
         }
-        alert(answersBody)
 
-        fetch(API_SAVE_ANSWERS, {
+
+        fetch(API_SAVE_ALL_ANSWERS, {
             method: "POST",
             headers: {
                 'Content-type': 'application/json'
@@ -86,46 +87,46 @@ const StartSurvey = () =>{
             body: JSON.stringify(answersBody)
         })
     }
-    
-    
+
+
 
 
     const getAnswerId = (string) => {
         let id = 0;
         questions.map((question) => {
-            question.answers.map((answer)=>{
-                if(answer.answer===string){
+            question.answers.map((answer) => {
+                if (answer.answer === string) {
                     id = answer.answerID
                 }
             })
         })
         return id
     }
- 
-    
-    
-   
 
-    return(
-       
+
+
+
+
+    return (
+
         <form onSubmit={handleSubmit}>
             <FormControl component="fieldset" error={error} className={classes.formControl}>
                 {questions.map((question, index) => (
                     <><FormLabel component="legend" key={question.questionID}>{question.question}</FormLabel>
-                            <RadioGroup aria-label="quiz" name={question.questionID} value={value[index]} onChange={handleRadioChange}>
+                        <RadioGroup aria-label="quiz" name={question.questionID} value={value[index]} onChange={handleRadioChange}>
                             {question.answers.map((answer) => (
-                            
-                                <FormControlLabel key={answer.answerID} value={answer.answer} 
-                                control={<Radio />} label={answer.answer} />
-                                
-                                ))}
-                            </RadioGroup>
-                    <FormHelperText>{helperText}</FormHelperText>
+
+                                <FormControlLabel key={answer.answerID} value={answer.answer}
+                                    control={<Radio />} label={answer.answer} />
+
+                            ))}
+                        </RadioGroup>
+                        <FormHelperText>{helperText}</FormHelperText>
                     </>
                 ))}
-                     <Button type="submit" variant="outlined" color="primary" className={classes.button}>
-                         Check Answer
-                     </Button>
+                <Button type="submit" variant="outlined" color="primary" className={classes.button}>
+                    Check Answer
+                </Button>
 
             </FormControl>
         </form>
