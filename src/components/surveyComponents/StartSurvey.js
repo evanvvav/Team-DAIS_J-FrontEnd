@@ -10,10 +10,12 @@ import FormLabel from '@material-ui/core/FormLabel';
 import Button from '@material-ui/core/Button';
 import { useParams } from "react-router";
 import useFetch from "../useFetch";
+import { TextField } from "@material-ui/core";
 
 
 const API_URL = "http://localhost:8080/apisurveys/"
-const API_SAVE_ALL_ANSWERS = "http://localhost:8080/savealluseranswers/"
+const API_SAVE_ALL_RADIO_ANSWERS = "http://localhost:8080/savealluseranswers/"
+const API_SAVE_ALL_OPEN_ANSWERS = "http://localhost:8080/saveallouanswers/"
 
 
 const useStyles = makeStyles((theme) => ({
@@ -35,10 +37,10 @@ const StartSurvey = () => {
 
     const [questions, setQuestions] = useState([])
     const [answers, setAnswers] = useState([])
-    const [answers2, setAnswers2] = useState([])
+
     const [value, setValue] = React.useState([])
     const [error, setError] = React.useState(false)
-    const [helperText, setHelperText] = React.useState('Choose wisely')
+    // const [helperText, setHelperText] = React.useState('Choose wisely')
 
 
 
@@ -58,37 +60,67 @@ const StartSurvey = () => {
     const handleRadioChange = (event) => {
         setValue([...value, event.target.value]);
         setAnswers({ ...answers, [event.target.name]: event.target.value })
-        setHelperText(' ');
-
-
+        // setHelperText(' ');
     };
 
+    const handleInputChange = (e) => {
+        // e.preventdefault()
+        setAnswers({ ...answers, [e.target.name]: e.target.value })
+    }
+
     const handleSubmit = () => {
-        let allQusetionId = []
-        let answersBody = []
+        // alert(answers[2] + answers[3])
+        let allRadioButtonQusetionId = []
+        let allOpenAnswerQusetionId = []
+        let radioButtonAnswersBody = []
+        let openAnswersBody = []
 
         questions.map((question) => {
-            allQusetionId.push(question.questionID)
+            if (question.questionType === "radio-button question") {
+                allRadioButtonQusetionId.push(question.questionID)
+            } else {
+                allOpenAnswerQusetionId.push(question.questionID)
+            }
         })
 
-        for (let i = 0; i < allQusetionId.length; i++) {
-            answersBody.push({
-                "answer": { "answerID": getAnswerId(answers[allQusetionId[i]]) },
-                "user": { "userID": 12 }
+        for (let i = 0; i < allRadioButtonQusetionId.length; i++) {
+            radioButtonAnswersBody.push({
+                "answer": { "answerID": getAnswerId(answers[allRadioButtonQusetionId[i]]) },
+                "user": { "userID": 13 }
             })
         }
 
+        for (let i = 0; i < allOpenAnswerQusetionId.length; i++) {
+            openAnswersBody.push({
+                "answerText": answers[allOpenAnswerQusetionId[i]],
+                "user": { "userID": 13 },
+                "question": { "questionID": allOpenAnswerQusetionId[i] }
+            })
+        }
 
-        fetch(API_SAVE_ALL_ANSWERS, {
-            method: "POST",
-            headers: {
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify(answersBody)
-        })
+        if (radioButtonAnswersBody !== null) {
+            alert(radioButtonAnswersBody.length)
+            fetch(API_SAVE_ALL_RADIO_ANSWERS, {
+                method: "POST",
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify(radioButtonAnswersBody)
+            })
+        }
+
+        if (openAnswersBody !== null) {
+            alert(openAnswersBody.length)
+            fetch(API_SAVE_ALL_OPEN_ANSWERS, {
+                method: "POST",
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify(openAnswersBody)
+            })
+        }
+
     }
-
-
 
 
     const getAnswerId = (string) => {
@@ -103,7 +135,7 @@ const StartSurvey = () => {
         return id
     }
 
-
+    console.log(questions)
 
 
 
@@ -112,18 +144,32 @@ const StartSurvey = () => {
         <form onSubmit={handleSubmit}>
             <FormControl component="fieldset" error={error} className={classes.formControl}>
                 {questions.map((question, index) => (
-                    <><FormLabel component="legend" key={question.questionID}>{question.question}</FormLabel>
-                        <RadioGroup aria-label="quiz" name={question.questionID} value={value[index]} onChange={handleRadioChange}>
-                            {question.answers.map((answer) => (
+                    (question.questionType === "radio-button question" ? (
+                        <><FormLabel component="legend" key={question.questionID}>{question.question}</FormLabel>
+                            <RadioGroup aria-label="quiz" name={question.questionID} value={value[index]} onChange={handleRadioChange}>
+                                {question.answers.map((answer) => (
 
-                                <FormControlLabel key={answer.answerID} value={answer.answer}
-                                    control={<Radio />} label={answer.answer} />
+                                    <FormControlLabel key={answer.answerID} value={answer.answer}
+                                        control={<Radio />} label={answer.answer} />
 
-                            ))}
-                        </RadioGroup>
-                        <FormHelperText>{helperText}</FormHelperText>
-                    </>
-                ))}
+                                ))}
+                            </RadioGroup>
+                            {/* <FormHelperText>{helperText}</FormHelperText> */}
+                        </>
+                    ) : (
+                        <>
+                            <p>{question.question}</p>
+                            <TextField
+                                margin="dense"
+                                name={question.questionID}
+                                value={answers.answer}
+                                onChange={e => handleInputChange(e)}
+                                label="Open answer"
+                                fullWidth />
+                        </>
+                    ))
+                )
+                )}
                 <Button type="submit" variant="outlined" color="primary" className={classes.button}>
                     Check Answer
                 </Button>

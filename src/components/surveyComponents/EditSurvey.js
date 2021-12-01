@@ -12,6 +12,7 @@ import EditSurveyName from "./EditSurveyName";
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditAnswer from "../answerComponents/EditAnswer";
 import CreateAnswer from "../answerComponents/CreateAnswer";
+import { SettingsInputCompositeTwoTone } from "@material-ui/icons";
 
 
 
@@ -51,13 +52,13 @@ const EditSurvey = ({ updateSurvey }) => {
     const createNewQuestions = (data) => {
         let questionListBody = []
         let answers = []
-        
 
-        for(let i=0; i<data.length; i++){
+
+        for (let i = 0; i < data.length; i++) {
             questionListBody.push({
                 "survey": { "surveyID": id },
                 "question": data[i].question,
-                "questionType" : "radio-button question"
+                "questionType": "radio-button question"
             })
             answers.push(data[i].answer1)
             answers.push(data[i].answer2)
@@ -71,47 +72,60 @@ const EditSurvey = ({ updateSurvey }) => {
             },
             body: JSON.stringify(questionListBody)
         }).then(res => getQuestions(API_URL, id))
-        
-        
+
+
     }
 
+    console.log(questions)
 
     const createAnswers = (data) => {
         let answersLength = data.length;
         let answersListBody = []
         let answerNumber = 0;
         let questionNumber = 0;
+        let maxQuestionLength = questions.length
+        let freeCellNumber = 0;
 
-        if(data[0].answer===""){
+
+        if (data[0].answer === "") {
             alert("Enter the answer")
         }
 
 
-        while(answerNumber<answersLength){
-            let freeCellNumber = 3 - questions[questionNumber].answers.length
-            if(freeCellNumber===0){
-                alert("No free cell for answer")
-                break
+        while (answerNumber < answersLength) {
+
+            while (questionNumber !== (maxQuestionLength - 1)) {
+                freeCellNumber = 3 - questions[questionNumber].answers.length
+                if (freeCellNumber > 0) {
+                    break
+                } else {
+                    questionNumber++
+                }
             }
 
-            for(let w = 0; w<freeCellNumber; w++){
+            // if (freeCellNumber === 0) {
+            //     alert("No free cell for answer")
+            //     break
+            // }
+
+            for (let w = 0; w < freeCellNumber; w++) {
                 answersListBody.push({
-                    "question": {"questionID": questions[questionNumber].questionID},
+                    "question": { "questionID": questions[questionNumber].questionID },
                     "answer": data[answerNumber].answer
                 })
                 answerNumber++
-                if(answerNumber===answersLength || answerNumber > answersLength){
+                if (answerNumber === answersLength || answerNumber > answersLength) {
                     break
                 }
             }
             questionNumber++
         }
-        
+
         addAnswersToQusetion(answersListBody)
-        
+
     }
 
-    const addAnswersToQusetion = (answers) =>{
+    const addAnswersToQusetion = (answers) => {
         fetch(API_SAVE_ALL_ANSWERS, {
             method: "POST",
             headers: {
@@ -138,7 +152,7 @@ const EditSurvey = ({ updateSurvey }) => {
                 .catch(err => console.error(err))
         }
     }
- 
+
 
     const updateSurveyName = (newSurveyName) => {
         fetch(API_URL + id, {
@@ -177,7 +191,7 @@ const EditSurvey = ({ updateSurvey }) => {
                 'Content-type': 'application/json'
             },
             body: JSON.stringify({
-                "question": {"questionID":questionID},
+                "question": { "questionID": questionID },
                 "answer": answer
             })
 
@@ -185,7 +199,7 @@ const EditSurvey = ({ updateSurvey }) => {
             .then(res => getQuestions(API_URL, id))
             .catch(err => console.error(err))
     }
-    
+
 
 
 
@@ -218,7 +232,7 @@ const EditSurvey = ({ updateSurvey }) => {
             sortable: false,
             filterable: false,
             width: 75,
-            Cell: row => <EditAnswer updateAnswer={updateAnswer} data={row.original.answers[1]} questionID={row.original.questionID}/>
+            Cell: row => <EditAnswer updateAnswer={updateAnswer} data={row.original.answers[1]} questionID={row.original.questionID} />
         },
         {
             Header: "Answer",
@@ -228,14 +242,14 @@ const EditSurvey = ({ updateSurvey }) => {
             sortable: false,
             filterable: false,
             width: 75,
-            Cell: row => <EditAnswer updateAnswer={updateAnswer} data={row.original.answers[2]} questionID={row.original.questionID}/>
+            Cell: row => <EditAnswer updateAnswer={updateAnswer} data={row.original.answers[2]} questionID={row.original.questionID} />
         },
         {
             sortable: false,
             filterable: false,
             width: 75,
             accessor: "questionID",
-            Cell: row => <Button color="secondary" variant="outlined" size="small" onClick={() => deleteQuestion(row.value)}><DeleteIcon/></Button>
+            Cell: row => <Button color="secondary" variant="outlined" size="small" onClick={() => deleteQuestion(row.value)}><DeleteIcon /></Button>
         }
     ]
 
@@ -246,7 +260,7 @@ const EditSurvey = ({ updateSurvey }) => {
         <div className="edit-survey-page">
             <div className="edit-survey-page-header" style={{ display: "flex", alignItems: "center", justifyContent: "center", paddingBottom: "20px" }}>
                 <CreateQuestion createNewQuestions={createNewQuestions} />
-                <CreateAnswer createAnswers={createAnswers}/>
+                <CreateAnswer createAnswers={createAnswers} />
                 <h2>{surveyDesc}</h2>
                 <EditSurveyName updateSurveyName={updateSurveyName} surveyDesc={surveyDesc} />
                 <Button color="secondary" variant="outlined" size="medium" onClick={() => deleteSurvey()}>Delete survey</Button>
