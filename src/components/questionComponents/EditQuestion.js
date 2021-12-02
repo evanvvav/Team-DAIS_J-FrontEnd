@@ -12,62 +12,62 @@ import EditIcon from '@material-ui/icons/Edit';
 
 
 
-export default function EditQuestion({updateQuestion, data }){
+export default function EditQuestion({ updateQuestion, data }) {
 
-    const [questions, setQuestions] = React.useState("");
+    const [question, setQuestion] = React.useState("");
     const [open, setOpen] = React.useState(false);
-    
+
     const handleClickOpen = () => {
-        setQuestions(data.question)
+        setQuestion(data.question)
         setOpen(true)
     };
-  
+
     const handleClose = () => {
         setOpen(false);
     };
 
-    
 
-    const handleInputChange = (event) =>{
-        setQuestions(event.target.value)
+
+    const handleInputChange = (event) => {
+        setQuestion(event.target.value)
     }
 
-    const editQuestion = () =>{
-        updateQuestion(questions, data);
+    const editQuestion = () => {
+        updateQuestion(question, data);
         handleClose();
     }
 
 
-    
 
-    return(
+
+    return (
         <div>
-        <Button variant="outlined" color="primary" size="small" onClick={handleClickOpen}>
-            <EditIcon/>
-        </Button>
-        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title">Edit Question</DialogTitle>
-            <DialogContent>
-            
-                <TextField
-                    autoFocus
-                    margin="dense"
-                    name="question"
-                    value={questions}
-                    onChange={e => handleInputChange(e)}
-                    label="Question"
-                    fullWidth
-                />
-                </DialogContent>      
-            <DialogActions>
-                <Button onClick={handleClose} color="primary">
-                    Cancel
-                </Button>
-                <Button onClick={editQuestion} color="primary">
-                    Save
-                </Button>
-            </DialogActions>
-        </Dialog>
+            <Button variant="outlined" color="primary" size="small" onClick={handleClickOpen}>
+                <EditIcon />
+            </Button>
+            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                <DialogTitle id="form-dialog-title">Edit Question</DialogTitle>
+                <DialogContent>
+
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        name="question"
+                        value={question}
+                        onChange={e => handleInputChange(e)}
+                        label="Question"
+                        fullWidth
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} color="primary">
+                        Cancel
+                    </Button>
+                    <Button onClick={editQuestion} color="primary">
+                        Save
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </div>
     );
 }

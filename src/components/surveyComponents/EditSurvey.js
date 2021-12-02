@@ -43,7 +43,22 @@ const EditSurvey = ({ updateSurvey }) => {
         fetch(API_URL + id)
             .then(res => res.json())
             .then(data => {
-                setQuestions(data.questions)
+                let radioQuestions = []
+                let openQuestions = []
+
+
+
+                for (let i = 0; i < data.questions.length; i++) {
+                    if (data.questions[i].questionType === "radio-button question") {
+                        radioQuestions.push(data.questions[i])
+                    } else {
+                        openQuestions.push(data.questions[i])
+                    }
+                }
+
+                console.log(openQuestions)
+
+                setQuestions([...radioQuestions, ...openQuestions])
                 setSurveyDesc(data.surveyDesc)
             })
     }
@@ -58,7 +73,7 @@ const EditSurvey = ({ updateSurvey }) => {
             questionListBody.push({
                 "survey": { "surveyID": id },
                 "question": data[i].question,
-                "questionType": "radio-button question"
+                "questionType": data[i].questionType
             })
             answers.push(data[i].answer1)
             answers.push(data[i].answer2)
@@ -176,7 +191,7 @@ const EditSurvey = ({ updateSurvey }) => {
             body: JSON.stringify({
                 "question": question,
                 "survey": { "surveyID": id },
-                "questionType": "radio-button question"
+                "questionType": data.questionType
             })
 
         })
@@ -222,7 +237,7 @@ const EditSurvey = ({ updateSurvey }) => {
             sortable: false,
             filterable: false,
             width: 75,
-            Cell: row => <EditAnswer updateAnswer={updateAnswer} data={row.original.answers[0]} questionID={row.original.questionID} />
+            Cell: row => { return row.original.questionType === "radio-button question" ? <EditAnswer updateAnswer={updateAnswer} data={row.original.answers[0]} questionID={row.original.questionID} /> : <></> }
         },
         {
             Header: "Answer",
@@ -232,7 +247,7 @@ const EditSurvey = ({ updateSurvey }) => {
             sortable: false,
             filterable: false,
             width: 75,
-            Cell: row => <EditAnswer updateAnswer={updateAnswer} data={row.original.answers[1]} questionID={row.original.questionID} />
+            Cell: row => { return row.original.questionType === "radio-button question" ? <EditAnswer updateAnswer={updateAnswer} data={row.original.answers[1]} questionID={row.original.questionID} /> : <></> }
         },
         {
             Header: "Answer",
@@ -242,7 +257,7 @@ const EditSurvey = ({ updateSurvey }) => {
             sortable: false,
             filterable: false,
             width: 75,
-            Cell: row => <EditAnswer updateAnswer={updateAnswer} data={row.original.answers[2]} questionID={row.original.questionID} />
+            Cell: row => { return row.original.questionType === "radio-button question" ? <EditAnswer updateAnswer={updateAnswer} data={row.original.answers[2]} questionID={row.original.questionID} /> : <></> }
         },
         {
             sortable: false,

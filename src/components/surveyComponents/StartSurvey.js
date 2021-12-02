@@ -158,7 +158,7 @@ const StartSurvey = () => {
                         </>
                     ) : (
                         <>
-                            <p>{question.question}</p>
+                            <label>{question.question}</label>
                             <TextField
                                 margin="dense"
                                 name={question.questionID}

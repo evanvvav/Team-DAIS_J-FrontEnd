@@ -15,7 +15,7 @@ const CreateQuestion = ({ createNewQuestions }) => {
     // const [surveyName, setSurveyName] = React.useState([]);
     const [open, setOpen] = React.useState(false);
     const [inputFields, setInputFields] = React.useState([
-        { id: uuidv4(), question: '' }]);
+        { id: uuidv4(), question: '', questionType: '' }]);
 
 
 
@@ -45,7 +45,7 @@ const CreateQuestion = ({ createNewQuestions }) => {
 
 
     const handleAddFields = () => {
-        setInputFields([...inputFields, { id: uuidv4(), question: ''}])
+        setInputFields([...inputFields, { id: uuidv4(), question: '', questionType: '' }])
     }
 
     const handleRemoveFields = (id) => {
@@ -64,7 +64,7 @@ const CreateQuestion = ({ createNewQuestions }) => {
 
     return (
         <div>
-            <Button  variant="outlined" color="primary" size="medium" onClick={handleClickOpen} >
+            <Button variant="outlined" color="primary" size="medium" onClick={handleClickOpen} >
                 Create New Question/s
             </Button>
 
@@ -82,7 +82,17 @@ const CreateQuestion = ({ createNewQuestions }) => {
                                 label="Question name"
                                 fullWidth
                             />
-                           
+
+                            <label>Questions Type:</label>
+                            <select
+                                name="questionType"
+                                value={inputField.questionType}
+                                onChange={event => handleInputChange(inputField.id, event)}
+                            >
+                                <option value="radio-button question" selected>radio button</option>
+                                <option value="open question">open question</option>
+                            </select>
+
                             <Button disabled={inputFields.length === 1} onClick={() => handleRemoveFields(inputField.id)}>Remove</Button>
                             <Button onClick={handleAddFields}>add</Button>
                         </div>
