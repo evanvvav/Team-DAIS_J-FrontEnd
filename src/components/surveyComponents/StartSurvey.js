@@ -1,182 +1,124 @@
-import React, { useEffect, useState } from "react";
 
-import { makeStyles } from '@material-ui/core/styles';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormLabel from '@material-ui/core/FormLabel';
+import React, { useEffect } from 'react';
 import Button from '@material-ui/core/Button';
-import { useParams } from "react-router";
-import useFetch from "../useFetch";
-import { TextField } from "@material-ui/core";
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+// import { SvgIcon } from '@material-ui/core';
+// import EditIcon from '@mui/icons-material/Edit';
+import EditIcon from '@material-ui/icons/Edit';
 
-
-const API_URL = "http://localhost:8080/apisurveys/"
-const API_SAVE_ALL_RADIO_ANSWERS = "http://localhost:8080/savealluseranswers/"
-const API_SAVE_ALL_OPEN_ANSWERS = "http://localhost:8080/saveallouanswers/"
-
-
-const useStyles = makeStyles((theme) => ({
-    formControl: {
-        margin: theme.spacing(3),
-    },
-    button: {
-        margin: theme.spacing(1, 1, 0, 0),
-    },
-}));
-
-
-const StartSurvey = () => {
-    const classes = useStyles()
-
-    const { id } = useParams()
-    // const { data, isPending, error } = useFetch(API_URL+id) ??????????????????????????
-
-
-    const [questions, setQuestions] = useState([])
-    const [answers, setAnswers] = useState([])
-
-    const [value, setValue] = React.useState([])
-    const [error, setError] = React.useState(false)
-    // const [helperText, setHelperText] = React.useState('Choose wisely')
+const API = "http://localhost:8080/apiusers"
 
 
 
+export default function StartSurvey({ startSurvey, id }) {
 
-    useEffect(() => getQuestions(API_URL, id), []);
+    const [users, setUsers] = React.useState([])
+    const [name, setName] = React.useState("");
+    const [open, setOpen] = React.useState(false);
 
-    const getQuestions = (API_URL, id) => {
-        fetch(API_URL + id)
+    useEffect(() => getUsers(API), []);
+
+    const getUsers = (API) => {
+        fetch(API)
             .then(res => res.json())
             .then(data => {
-                setQuestions(data.questions)
-
+                setUsers(data)
             })
     }
 
+    const handleClickOpen = () => {
+        setOpen(true)
 
-    const handleRadioChange = (event) => {
-        setValue([...value, event.target.value]);
-        setAnswers({ ...answers, [event.target.name]: event.target.value })
-        // setHelperText(' ');
     };
 
-    const handleInputChange = (e) => {
-        // e.preventdefault()
-        setAnswers({ ...answers, [e.target.name]: e.target.value })
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+
+    const handleInputChange = (event) => {
+        setName(event.target.value)
     }
 
-    const handleSubmit = () => {
-        // alert(answers[2] + answers[3])
-        let allRadioButtonQusetionId = []
-        let allOpenAnswerQusetionId = []
-        let radioButtonAnswersBody = []
-        let openAnswersBody = []
+    const start = () => {
+        let freeName = true;
 
-        questions.map((question) => {
-            if (question.questionType === "radio-button question") {
-                allRadioButtonQusetionId.push(question.questionID)
-            } else {
-                allOpenAnswerQusetionId.push(question.questionID)
-            }
-        })
+        // A LOT OF FETCH, EACH TIME THEN U TYPE A TEXT ????????????????????????????????????????????????????????????????????
 
-        for (let i = 0; i < allRadioButtonQusetionId.length; i++) {
-            radioButtonAnswersBody.push({
-                "answer": { "answerID": getAnswerId(answers[allRadioButtonQusetionId[i]]) },
-                "user": { "userID": 13 }
-            })
-        }
-
-        for (let i = 0; i < allOpenAnswerQusetionId.length; i++) {
-            openAnswersBody.push({
-                "answerText": answers[allOpenAnswerQusetionId[i]],
-                "user": { "userID": 13 },
-                "question": { "questionID": allOpenAnswerQusetionId[i] }
-            })
-        }
-
-        if (radioButtonAnswersBody !== null) {
-            alert(radioButtonAnswersBody.length)
-            fetch(API_SAVE_ALL_RADIO_ANSWERS, {
-                method: "POST",
-                headers: {
-                    'Content-type': 'application/json'
-                },
-                body: JSON.stringify(radioButtonAnswersBody)
-            })
-        }
-
-        if (openAnswersBody !== null) {
-            alert(openAnswersBody.length)
-            fetch(API_SAVE_ALL_OPEN_ANSWERS, {
-                method: "POST",
-                headers: {
-                    'Content-type': 'application/json'
-                },
-                body: JSON.stringify(openAnswersBody)
-            })
-        }
-
-    }
-
-
-    const getAnswerId = (string) => {
-        let id = 0;
-        questions.map((question) => {
-            question.answers.map((answer) => {
-                if (answer.answer === string) {
-                    id = answer.answerID
+        for (let i = 0; i < users.length; i++) {
+            if (users[i].userName === name) {
+                freeName = false
+                if (users[i].userAnswers.length === 0) {
+                    startSurvey(id, name)
+                    handleClose();
+                    break
+                } else if (users[i].userAnswers[0].answer.question.survey.surveyID === id) {
+                    alert("You have done this survey")
+                    break
+                } else {
+                    startSurvey(id, name)
+                    handleClose();
+                    break
                 }
+
+                // alert("This name is already registered, please choose another")
+                // freeName = false
+                // break
+            }
+
+        }
+
+        if (freeName) {
+            fetch(API, {
+                method: "POST",
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "userName": name
+                })
             })
-        })
-        return id
+
+            startSurvey(id, name)
+            handleClose();
+        }
+
     }
 
-    console.log(questions)
 
-
+    console.log(users)
 
     return (
-
-        <form onSubmit={handleSubmit}>
-            <FormControl component="fieldset" error={error} className={classes.formControl}>
-                {questions.map((question, index) => (
-                    (question.questionType === "radio-button question" ? (
-                        <><FormLabel component="legend" key={question.questionID}>{question.question}</FormLabel>
-                            <RadioGroup aria-label="quiz" name={question.questionID} value={value[index]} onChange={handleRadioChange}>
-                                {question.answers.map((answer) => (
-
-                                    <FormControlLabel key={answer.answerID} value={answer.answer}
-                                        control={<Radio />} label={answer.answer} />
-
-                                ))}
-                            </RadioGroup>
-                            {/* <FormHelperText>{helperText}</FormHelperText> */}
-                        </>
-                    ) : (
-                        <>
-                            <label>{question.question}</label>
-                            <TextField
-                                margin="dense"
-                                name={question.questionID}
-                                value={answers.answer}
-                                onChange={e => handleInputChange(e)}
-                                label="Open answer"
-                                fullWidth />
-                        </>
-                    ))
-                )
-                )}
-                <Button type="submit" variant="outlined" color="primary" className={classes.button}>
-                    Check Answer
-                </Button>
-
-            </FormControl>
-        </form>
-    )
+        <div>
+            <Button variant="outlined" color="primary" size="small" onClick={handleClickOpen}>
+                Start
+            </Button>
+            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                <DialogTitle id="form-dialog-title">Enter your name</DialogTitle>
+                <DialogContent>
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        name="name"
+                        value={name}
+                        onChange={e => handleInputChange(e)}
+                        label="Name"
+                        fullWidth
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} color="primary">
+                        Cancel
+                    </Button>
+                    <Button onClick={start} color="primary">
+                        Start
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </div>
+    );
 }
-
-export default StartSurvey;

@@ -109,7 +109,7 @@ const EditSurvey = ({ updateSurvey }) => {
 
         while (answerNumber < answersLength) {
 
-            while (questionNumber !== (maxQuestionLength - 1)) {
+            while (questionNumber < (maxQuestionLength)) {
                 freeCellNumber = 3 - questions[questionNumber].answers.length
                 if (freeCellNumber > 0) {
                     break
@@ -216,7 +216,7 @@ const EditSurvey = ({ updateSurvey }) => {
     }
 
 
-
+    console.log(questions)
 
     const columns = [
         {
