@@ -11,6 +11,11 @@ import HomePage from "./components/HomePage"
 import useFetch from "./components/useFetch";
 import CreateSurvey from "./components/surveyComponents/CreateSurvey";
 import SurveyPage from "./components/surveyComponents/SurveyPage"
+import StatisticsList from "./components/statisticsComponents/StatisticsList";
+import StatisticsBySurvey from "./components/statisticsComponents/StatisticsBySurvey";
+import BySurveyStatisticsPage from "./components/statisticsComponents/BySurveyStatisticsPage";
+import StatisticsByUser from "./components/statisticsComponents/StatisticsByUser"
+import ByUserStatisticsPage from "./components/statisticsComponents/ByUserStatisticsPage"
 
 
 
@@ -36,6 +41,21 @@ function App() {
             </Route>
             <Route path="/editSurvey/:id">
               <EditSurvey />
+            </Route>
+            <Route path="/statisticsList">
+              <StatisticsList />
+            </Route>
+            <Route path="/bySurveyStatisticsPage">
+              <BySurveyStatisticsPage />
+            </Route>
+            <Route path="/byUserStatisticsPage">
+              <ByUserStatisticsPage />
+            </Route>
+            <Route path="/statisticsBySurvey/:id">
+              <StatisticsBySurvey />
+            </Route>
+            <Route path="/statisticsByUser">
+              <StatisticsByUser />
             </Route>
             <Route path="*">
               <NotFound />

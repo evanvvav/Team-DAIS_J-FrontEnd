@@ -94,7 +94,7 @@ export default function StartSurvey({ startSurvey, id }) {
 
     return (
         <div>
-            <Button variant="outlined" color="primary" size="small" onClick={handleClickOpen}>
+            <Button style={{ margin: 10 }} variant="outlined" color="primary" size="small" onClick={handleClickOpen}>
                 Start
             </Button>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">

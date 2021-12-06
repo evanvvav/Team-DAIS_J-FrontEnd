@@ -66,7 +66,7 @@ const EditSurvey = ({ updateSurvey }) => {
 
     const createNewQuestions = (data) => {
         let questionListBody = []
-        let answers = []
+
 
 
         for (let i = 0; i < data.length; i++) {
@@ -75,9 +75,6 @@ const EditSurvey = ({ updateSurvey }) => {
                 "question": data[i].question,
                 "questionType": data[i].questionType
             })
-            answers.push(data[i].answer1)
-            answers.push(data[i].answer2)
-            answers.push(data[i].answer3)
         }
         //add question/s to DB
         fetch(API_SAVE_ALL_QUESTIONS, {

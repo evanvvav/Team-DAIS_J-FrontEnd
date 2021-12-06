@@ -8,7 +8,7 @@ import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormLabel from '@material-ui/core/FormLabel';
 import Button from '@material-ui/core/Button';
-import { useParams } from "react-router";
+import { useHistory, useParams } from "react-router";
 import useFetch from "../useFetch";
 import { TextField } from "@material-ui/core";
 
@@ -32,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
 
 const StartSurvey = ({ name }) => {
     const classes = useStyles()
+    const history = useHistory()
 
     const { id } = useParams()
     const { userName } = useParams()
@@ -140,6 +141,9 @@ const StartSurvey = ({ name }) => {
                 body: JSON.stringify(openAnswersBody)
             })
         }
+
+        alert("Thank you for your answers")
+        history.push("/surveyList")
 
     }
 
