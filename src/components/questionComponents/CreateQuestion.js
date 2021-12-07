@@ -15,7 +15,7 @@ const CreateQuestion = ({ createNewQuestions }) => {
     // const [surveyName, setSurveyName] = React.useState([]);
     const [open, setOpen] = React.useState(false);
     const [inputFields, setInputFields] = React.useState([
-        { id: uuidv4(), question: '', questionType: '' }]);
+        { id: uuidv4(), question: '', questionType: "radio-button question" }]);
 
 
 
@@ -45,7 +45,7 @@ const CreateQuestion = ({ createNewQuestions }) => {
 
 
     const handleAddFields = () => {
-        setInputFields([...inputFields, { id: uuidv4(), question: '', questionType: '' }])
+        setInputFields([...inputFields, { id: uuidv4(), question: '', questionType: "radio-button question" }])
     }
 
     const handleRemoveFields = (id) => {
@@ -89,7 +89,7 @@ const CreateQuestion = ({ createNewQuestions }) => {
                                 value={inputField.questionType}
                                 onChange={event => handleInputChange(inputField.id, event)}
                             >
-                                <option value="radio-button question" selected>radio button</option>
+                                <option value="radio-button question" >radio button</option>
                                 <option value="open question">open question</option>
                             </select>
 

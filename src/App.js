@@ -13,9 +13,9 @@ import CreateSurvey from "./components/surveyComponents/CreateSurvey";
 import SurveyPage from "./components/surveyComponents/SurveyPage"
 import StatisticsList from "./components/statisticsComponents/StatisticsList";
 import StatisticsBySurvey from "./components/statisticsComponents/StatisticsBySurvey";
-import BySurveyStatisticsPage from "./components/statisticsComponents/BySurveyStatisticsPage";
+import BySurveyStatisticsList from "./components/statisticsComponents/BySurveyStatisticsList";
 import StatisticsByUser from "./components/statisticsComponents/StatisticsByUser"
-import ByUserStatisticsPage from "./components/statisticsComponents/ByUserStatisticsPage"
+import ByUserStatisticsList from "./components/statisticsComponents/ByUserStatisticsList"
 
 
 
@@ -46,15 +46,15 @@ function App() {
               <StatisticsList />
             </Route>
             <Route path="/bySurveyStatisticsPage">
-              <BySurveyStatisticsPage />
+              <BySurveyStatisticsList />
             </Route>
             <Route path="/byUserStatisticsPage">
-              <ByUserStatisticsPage />
+              <ByUserStatisticsList />
             </Route>
             <Route path="/statisticsBySurvey/:id">
               <StatisticsBySurvey />
             </Route>
-            <Route path="/statisticsByUser">
+            <Route path="/statisticsByUser/:id">
               <StatisticsByUser />
             </Route>
             <Route path="*">

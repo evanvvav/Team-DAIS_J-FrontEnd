@@ -7,7 +7,7 @@ import Card from "../Card";
 const StatisticsList = () => {
 
     return (
-        <div >
+        <div>
             <Link
                 style={{ textDecoration: "none", color: "black" }}
                 to={`/bySurveyStatisticsPage`}

@@ -28,13 +28,11 @@ const StatisticsBySurvey = () => {
     const { id } = useParams()
 
     const [data, setData] = useState([]);
+    const [surveyDesc, setSurveyDesc] = useState([]);
     const radioQuestions = []
     const openQuestions = []
     const radioAnswers = []
-    const openAnswers = [
-        [1, 2, 3],
-        [4, 5, 7]
-    ]
+    const openAnswers = []
 
     useEffect(() => getSurveys(API_URL, id), []);
 
@@ -43,6 +41,7 @@ const StatisticsBySurvey = () => {
             .then(res => res.json())
             .then(data => {
                 setData(data.questions)
+                setSurveyDesc(data.surveyDesc)
 
             })
 
@@ -64,6 +63,23 @@ const StatisticsBySurvey = () => {
         }
     }
 
+    const setOpenAnswers = () => {
+        let oneQuestionAnswers = []
+
+        for (let z = 0; z < data.length; z++) {
+            if (data[z].questionType === "open question") {
+                for (let i = 0; i < data[z].openUserAnswers.length; i++) {
+                    oneQuestionAnswers.push(
+                        data[z].openUserAnswers[i].answerText
+                    )
+                }
+
+                openAnswers.push(oneQuestionAnswers)
+                oneQuestionAnswers = []
+            }
+        }
+    }
+
     const setQuestions = () => {
         for (let z = 0; z < data.length; z++) {
             if (data[z].questionType === "radio-button question") {
@@ -76,24 +92,27 @@ const StatisticsBySurvey = () => {
 
     setRadioAnswers()
     setQuestions()
+    setOpenAnswers()
 
 
-    console.log(data)
-    console.log(radioAnswers)
-    console.log(openAnswers)
-    console.log(radioQuestions)
-    console.log(openQuestions)
+    console.log(surveyDesc)
+    // console.log(radioAnswers)
+    // console.log(openAnswers)
+    // console.log(radioQuestions)
+    // console.log(openQuestions)
 
     return (
         <div >
+            <Typography style={{ color: "#f1356d", paddingLeft: 50, paddingBottom: 10 }} variant="h4">{surveyDesc}</Typography>
             {radioAnswers.map((answer, index) => (
                 <Card styles={{ margin: 10 }}>
                     <Typography variant="h6">{radioQuestions[index]}</Typography>
                     <PieChart width={730} height={250}>
-                        <Pie data={answer} nameKey="answer" dataKey="number" cx="50%" cy="50%" outerRadius={80} fill="#8884d8" />
-                        {answer.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={chartColors[index]} /> // ??????????????????????????????????????
-                        ))}
+                        <Pie data={answer} nameKey="answer" dataKey="number" cx="50%" cy="50%" outerRadius={80} fill="#8884d8" >
+                            {answer.map((entry, index2) => (
+                                <Cell key={`cell-${index2}`} fill={chartColors[index2]} /> // ??????????????????????????????????????
+                            ))}
+                        </Pie>
                         <Legend />
                         <Tooltip />
                     </PieChart>
@@ -103,7 +122,7 @@ const StatisticsBySurvey = () => {
                 <Card styles={{ margin: 10 }}>
                     <Typography style={{ paddingBottom: 10 }} variant="h6">{openQuestions[index]}</Typography>
                     {answer.map((a) => (
-                        <li>{a}</li>
+                        <li style={{ fontSize: 18 }}>{a}</li>
                     ))}
                 </Card>
             ))}

@@ -37,7 +37,7 @@ const Navbar = () => {
 
 
       <div className="login">
-        <Link to="/null" style={{
+        <Link to="/login" style={{
           color: 'white',
           backgroundColor: '#f1356d',
           borderRadius: '8px',

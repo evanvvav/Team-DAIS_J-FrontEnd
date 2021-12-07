@@ -180,8 +180,8 @@ const StartSurvey = ({ name }) => {
             <FormControl component="fieldset" error={error} className={classes.formControl}>
                 {questions.map((question, index) => (
                     (question.questionType === "radio-button question" ? (
-                        <><FormLabel component="legend" key={question.questionID}>{question.question}</FormLabel>
-                            <RadioGroup aria-label="quiz" name={question.questionID} value={value[index]} onChange={handleRadioChange}>
+                        <><FormLabel style={{ paddingBottom: 2, color: "black", fontSize: 23 }} component="legend" key={question.questionID}>{question.question}</FormLabel>
+                            <RadioGroup style={{ paddingBottom: 25 }} aria-label="quiz" name={question.questionID} value={value[index]} onChange={handleRadioChange}>
                                 {question.answers.map((answer) => (
 
                                     <FormControlLabel key={answer.answerID} value={answer.answer}
@@ -193,7 +193,7 @@ const StartSurvey = ({ name }) => {
                         </>
                     ) : (
                         <>
-                            <label>{question.question}</label>
+                            <FormLabel style={{ color: "black", fontSize: 23 }}>{question.question}</FormLabel>
                             <TextField
                                 required
                                 margin="dense"
@@ -201,13 +201,14 @@ const StartSurvey = ({ name }) => {
                                 value={answers.answer}
                                 onChange={e => handleInputChange(e)}
                                 label="Open answer"
+                                style={{ paddingBottom: 25 }}
                                 fullWidth />
                         </>
                     ))
                 )
                 )}
                 <Button type="submit" variant="outlined" color="primary" className={classes.button}>
-                    Check Answer
+                    Submit
                 </Button>
 
             </FormControl>

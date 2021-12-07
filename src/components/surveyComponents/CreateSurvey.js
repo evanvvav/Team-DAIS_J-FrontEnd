@@ -25,9 +25,10 @@ const CreateSurvey = () => {
       <h2>Create New Survey</h2>
       <form onSubmit={handleSubmit}>
         <label>Survey's name:</label>
-        <input 
-          type="text" 
-          required 
+        <input
+          type="text"
+          required
+          style={{ width: "370px" }}
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
@@ -36,5 +37,5 @@ const CreateSurvey = () => {
     </div>
   );
 }
- 
+
 export default CreateSurvey;
