@@ -14,9 +14,9 @@ import { TextField } from "@material-ui/core";
 
 
 const API_URL = "http://localhost:8080/apisurveys/"
+const API_RESPONDENTS = "http://localhost:8080/apirespondents" 
 const API_SAVE_ALL_RADIO_ANSWERS = "http://localhost:8080/savealluseranswers/"
 const API_SAVE_ALL_OPEN_ANSWERS = "http://localhost:8080/saveallouanswers/"
-const API_USER = "http://localhost:8080/apiusers"
 
 
 
@@ -35,13 +35,13 @@ const StartSurvey = ({ name }) => {
     const history = useHistory()
 
     const { id } = useParams()
-    const { userName } = useParams()
+    const { respondentName } = useParams()
     // const { data, isPending, error } = useFetch(API_URL+id) ??????????????????????????
 
 
     const [questions, setQuestions] = useState([])
     const [answers, setAnswers] = useState([])
-    const [users, setUsers] = useState([])
+    const [respondents, setRespondents] = useState([])
     const [value, setValue] = React.useState([])
     const [error, setError] = React.useState(false)
     // const [helperText, setHelperText] = React.useState('Choose wisely')
@@ -56,22 +56,18 @@ const StartSurvey = ({ name }) => {
             .then(res => res.json())
             .then(data => {
                 setQuestions(data.questions)
-                getUsers()
+                getRespondents()
 
             })
     }
 
-    const getUsers = () => {
+    const getRespondents = () => {
 
-        fetch(API_USER)
+        fetch(API_RESPONDENTS)
             .then(res => res.json())
             .then(data => {
-                setUsers(data)
+                setRespondents(data)
             })
-
-
-
-        // return (users) //HOW TO GET JUST USERid?????????????????????????????????????????????????????????????????????????????????
     }
 
 
@@ -94,7 +90,7 @@ const StartSurvey = ({ name }) => {
         let openAnswersBody = []
 
 
-        const userID = getUserID(userName)
+        const respondentID = getRespondentID(respondentName)
 
 
 
@@ -110,14 +106,14 @@ const StartSurvey = ({ name }) => {
         for (let i = 0; i < allRadioButtonQusetionId.length; i++) {
             radioButtonAnswersBody.push({
                 "answer": { "answerID": getAnswerId(answers[allRadioButtonQusetionId[i]]) },
-                "user": { "userID": userID }
+                "respondent": { "respondentID": respondentID }
             })
         }
 
         for (let i = 0; i < allOpenAnswerQusetionId.length; i++) {
             openAnswersBody.push({
                 "answerText": answers[allOpenAnswerQusetionId[i]],
-                "user": { "userID": userID },
+                "respondent": { "respondentID": respondentID },
                 "question": { "questionID": allOpenAnswerQusetionId[i] }
             })
         }
@@ -161,14 +157,14 @@ const StartSurvey = ({ name }) => {
     }
 
 
-    const getUserID = (name) => {
-        let userID = 0
-        users.map((user) => { /// HOW TO MAKE IT BETTER?????????????????????????????????????????????????????????????????????????????
-            if (user.userName === name) {
-                userID = user.userID
+    const getRespondentID = (name) => {
+        let respondentID = 0
+        respondents.map((respondent) => { /// HOW TO MAKE IT BETTER?????????????????????????????????????????????????????????????????????????????
+            if (respondent.respondentName === name) {
+                respondentID = respondent.respondentID
             }
         })
-        return userID
+        return respondentID
     }
 
 

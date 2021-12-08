@@ -9,7 +9,7 @@ import StatisticsBySurvey from "./StatisticsBySurvey";
 import { Button, TextField } from "@material-ui/core"
 
 
-const API_URL = "http://localhost:8080/apiusers"
+const API_URL = "http://localhost:8080/apirespondents"
 
 
 
@@ -44,12 +44,12 @@ const ByUserStatistics = () => {
             sortable: false,
             filterable: false,
             width: 200,
-            accessor: "userID",
+            accessor: "respondentID",
             Cell: row => <Button color="primary" variant="outlined" size="small" onClick={() => showStatistics(row.value)}>Show Statistics</Button>
         },
         {
             Header: "Name",
-            accessor: "userName"
+            accessor: "respondentName"
         },
         {
             Header: "Number of Radio Answers",

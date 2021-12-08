@@ -7,17 +7,18 @@ import { useHistory } from "react-router";
 import EditSurvey from "./EditSurvey"
 import StartSurvey from "./StartSurvey";
 import { Last } from "react-bootstrap/esm/PageItem";
+import authService from "../../services/auth.service";
 
 
 
 const API_URL = "http://localhost:8080/apisurveys/"
-const API_USER = "http://localhost:8080/apiusers"
+
 
 
 
 const SurveysList = () => {
 
-    // const { data: surveys, isPending, error } = useFetch(API_URL)
+    const user = authService.getCurrentUser();
     const history = useHistory();
     const [surveys, setSurveys] = useState([]);
 
@@ -34,23 +35,6 @@ const SurveysList = () => {
 
 
     const startSurvey = (id, name) => {
-        // let users = []
-
-        // fetch(API_USER)
-        //     .then(res => res.json())
-        //     .then(data => {
-        //         users.push(data[3])
-        //     })
-
-        // alert(users)
-        // const userID = users.map((user) => {
-        //         if (user.userName === name) {
-        //             // return user.userID
-        //             alert(1)
-        //         }
-        //     })
-
-        // alert(user)
         history.push('/survey/' + id + '/' + name);
     }
 
@@ -70,13 +54,13 @@ const SurveysList = () => {
 
 
 
+
     const columns = [
         {
             sortable: false,
             filterable: false,
             width: 110,
             accessor: "surveyID",
-            // Cell: row => <Button style={{margin: 10}} color="primary" variant="outlined" size="medium" onClick={() => startSurvey(row.value)}>Start</Button>
             Cell: row => <StartSurvey startSurvey={startSurvey} id={row.value} />
         },
         {
@@ -92,15 +76,16 @@ const SurveysList = () => {
             filterable: false,
             width: 100,
             accessor: "surveyID",
-            Cell: row => <Button style={{ margin: 10 }} color="primary" variant="outlined" size="small" onClick={() => editSurvey(row.value)}>Edit</Button>
+            Cell: row => {return user ? (<Button style={{ margin: 10 }} color="primary" variant="outlined" size="small" onClick={() => editSurvey(row.value)}>Edit</Button>):<></>}
         },
         {
             sortable: false,
             filterable: false,
             width: 100,
             accessor: "surveyID",
-            Cell: row => <Button style={{ margin: 10 }} color="secondary" variant="outlined" size="small" onClick={() => deleteSurvey(row.value)}>Delete</Button>
+            Cell: row => {return user ? (<Button style={{ margin: 10 }} color="secondary" variant="outlined" size="small" onClick={() => deleteSurvey(row.value)}>Delete</Button>):<></>}
         }
+        
     ]
 
 
@@ -108,8 +93,6 @@ const SurveysList = () => {
     return (
 
         <div className="survey-page">
-            {/* { error && <div>{ error }</div> } */}
-            {/* { isPending && <div>Loading...</div> } */}
             <ReactTable filterable={true} data={surveys} columns={columns} style={{ marginTop: 10, textAlign: "center" }} />
         </div>
 

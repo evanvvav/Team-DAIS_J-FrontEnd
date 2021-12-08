@@ -8,7 +8,6 @@ import NotFound from "./components/NotFound"
 
 import EditSurvey from "./components/surveyComponents/EditSurvey";
 import HomePage from "./components/HomePage"
-import useFetch from "./components/useFetch";
 import CreateSurvey from "./components/surveyComponents/CreateSurvey";
 import SurveyPage from "./components/surveyComponents/SurveyPage"
 import StatisticsList from "./components/statisticsComponents/StatisticsList";
@@ -16,6 +15,7 @@ import StatisticsBySurvey from "./components/statisticsComponents/StatisticsBySu
 import BySurveyStatisticsList from "./components/statisticsComponents/BySurveyStatisticsList";
 import StatisticsByUser from "./components/statisticsComponents/StatisticsByUser"
 import ByUserStatisticsList from "./components/statisticsComponents/ByUserStatisticsList"
+import Login from "./components/LoginComponent";
 
 
 
@@ -56,6 +56,9 @@ function App() {
             </Route>
             <Route path="/statisticsByUser/:id">
               <StatisticsByUser />
+            </Route>
+            <Route path="/login">
+              <Login />
             </Route>
             <Route path="*">
               <NotFound />

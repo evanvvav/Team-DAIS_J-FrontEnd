@@ -95,12 +95,6 @@ const StatisticsBySurvey = () => {
     setOpenAnswers()
 
 
-    console.log(surveyDesc)
-    // console.log(radioAnswers)
-    // console.log(openAnswers)
-    // console.log(radioQuestions)
-    // console.log(openQuestions)
-
     return (
         <div >
             <Typography style={{ color: "#f1356d", paddingLeft: 50, paddingBottom: 10 }} variant="h4">{surveyDesc}</Typography>

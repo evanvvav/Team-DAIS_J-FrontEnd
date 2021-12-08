@@ -6,11 +6,10 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-// import { SvgIcon } from '@material-ui/core';
-// import EditIcon from '@mui/icons-material/Edit';
 import EditIcon from '@material-ui/icons/Edit';
 
-const API = "http://localhost:8080/apiusers"
+const API = "http://localhost:8080/apirespondents/"
+
 
 
 
@@ -50,9 +49,9 @@ export default function StartSurvey({ startSurvey, id }) {
         // A LOT OF FETCH, EACH TIME THEN U TYPE A TEXT ????????????????????????????????????????????????????????????????????
 
         for (let i = 0; i < users.length; i++) {
-            if (users[i].userName === name) {
+            if (users[i].respondentName === name) {
                 freeName = false
-                if (users[i].userAnswers.length === 0) {
+                if (users[i].userAnswers.length === 0) { /// to change???????????????????????????????????????????????????
                     startSurvey(id, name)
                     handleClose();
                     break
@@ -79,7 +78,7 @@ export default function StartSurvey({ startSurvey, id }) {
                     'Content-type': 'application/json'
                 },
                 body: JSON.stringify({
-                    "userName": name
+                    "respondentName": name
                 })
             })
 
@@ -90,7 +89,7 @@ export default function StartSurvey({ startSurvey, id }) {
     }
 
 
-    console.log(users)
+   
 
     return (
         <div>

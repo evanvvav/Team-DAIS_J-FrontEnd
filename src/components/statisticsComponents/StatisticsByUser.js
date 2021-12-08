@@ -6,7 +6,7 @@ import { PieChart, Pie, Legend, Tooltip, Cell } from "recharts"
 import Card from "../Card";
 
 
-const API_URL = "http://localhost:8080/apiusers/"
+const API_URL = "http://localhost:8080/apirespondents/"
 const API_SURVEYS = "http://localhost:8080/apisurveys"
 
 
