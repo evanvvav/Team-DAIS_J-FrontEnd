@@ -7,6 +7,7 @@ import { useHistory } from "react-router";
 import { Last } from "react-bootstrap/esm/PageItem";
 import StatisticsBySurvey from "./StatisticsBySurvey";
 import { Button, TextField } from "@material-ui/core"
+import authService from "../../services/auth.service";
 
 
 const API_URL = "http://localhost:8080/apirespondents"
@@ -16,6 +17,8 @@ const API_URL = "http://localhost:8080/apirespondents"
 const ByUserStatistics = () => {
 
     const history = useHistory();
+    const user = authService.getCurrentUser();
+
     const [users, setUsers] = useState([]);
 
     useEffect(() => getSurveys(API_URL), []);
@@ -65,8 +68,16 @@ const ByUserStatistics = () => {
 
     return (
 
-        <div className="survey-page">
-            <ReactTable filterable={true} data={users} columns={columns} style={{ marginTop: 10, textAlign: "center" }} />
+        <div >
+            {user ? (
+                <>
+                    <ReactTable filterable={true} data={users} columns={columns} style={{ marginTop: 10, textAlign: "center" }} />
+                </>
+            ) : (
+                <div className="access-denied">
+                    <h1 style={{ color: "red" }}>ACCESS DENIED</h1>
+                </div>
+            )}
         </div>
 
     )

@@ -8,6 +8,8 @@ import EditSurvey from "./EditSurvey"
 import StartSurvey from "./StartSurvey";
 import { Last } from "react-bootstrap/esm/PageItem";
 import authService from "../../services/auth.service";
+import { Link } from "react-router-dom";
+import Card from "../Card";
 
 
 
@@ -45,7 +47,10 @@ const SurveysList = () => {
     const deleteSurvey = (delete_id) => {
         //ask if you are really want to delete
         if (window.confirm("Are you sure?")) {
-            fetch(API_URL + delete_id, { method: "DELETE" })
+            fetch(API_URL + delete_id, {
+                method: "DELETE",
+                headers: { 'Authorization': 'Bearer ' + user.jwt }
+            })
                 .then(res => getSurveys(API_URL))
                 .catch(err => console.error(err))
         }
@@ -55,45 +60,26 @@ const SurveysList = () => {
 
 
 
-    const columns = [
-        {
-            sortable: false,
-            filterable: false,
-            width: 110,
-            accessor: "surveyID",
-            Cell: row => <StartSurvey startSurvey={startSurvey} id={row.value} />
-        },
-        {
-            Header: "Name",
-            accessor: "surveyDesc"
-        },
-        {
-            Header: "number of questions",
-            accessor: "questions.length"
-        },
-        {
-            sortable: false,
-            filterable: false,
-            width: 100,
-            accessor: "surveyID",
-            Cell: row => {return user ? (<Button style={{ margin: 10 }} color="primary" variant="outlined" size="small" onClick={() => editSurvey(row.value)}>Edit</Button>):<></>}
-        },
-        {
-            sortable: false,
-            filterable: false,
-            width: 100,
-            accessor: "surveyID",
-            Cell: row => {return user ? (<Button style={{ margin: 10 }} color="secondary" variant="outlined" size="small" onClick={() => deleteSurvey(row.value)}>Delete</Button>):<></>}
-        }
-        
-    ]
-
-
 
     return (
 
-        <div className="survey-page">
-            <ReactTable filterable={true} data={surveys} columns={columns} style={{ marginTop: 10, textAlign: "center" }} />
+        <div>
+            {surveys.map((survey) => (
+                <Card styles={{ margin: 25 }} >
+                    <div className="survey-list">
+                        <div className="info">
+                            <StartSurvey startSurvey={startSurvey} id={survey.surveyID} />
+                            <div className="questions-length">{survey.questions.length}</div>
+                            <h3>{survey.surveyDesc}</h3>
+                        </div>
+                        <div>
+                            {user ? (<Button style={{ margin: 10 }} color="primary" variant="outlined" size="medium" onClick={() => editSurvey(survey.surveyID)}>Edit</Button>) : <></>}
+                            {user ? (<Button style={{ margin: 10 }} color="secondary" variant="outlined" size="medium" onClick={() => deleteSurvey(survey.surveyID)}>Delete</Button>) : <></>}
+                        </div>
+                    </div>
+                </Card>
+            ))}
+
         </div>
 
     )

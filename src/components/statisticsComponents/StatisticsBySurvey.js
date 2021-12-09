@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useParams } from "react-router";
 import { PieChart, Pie, Legend, Tooltip, Cell } from "recharts"
+import authService from "../../services/auth.service";
 import Card from "../Card";
 
 
@@ -26,6 +27,8 @@ const API_URL = "http://localhost:8080/apisurveys/"
 
 const StatisticsBySurvey = () => {
     const { id } = useParams()
+    const user = authService.getCurrentUser();
+
 
     const [data, setData] = useState([]);
     const [surveyDesc, setSurveyDesc] = useState([]);
@@ -96,31 +99,38 @@ const StatisticsBySurvey = () => {
 
 
     return (
-        <div >
-            <Typography style={{ color: "#f1356d", paddingLeft: 50, paddingBottom: 10 }} variant="h4">{surveyDesc}</Typography>
-            {radioAnswers.map((answer, index) => (
-                <Card styles={{ margin: 10 }}>
-                    <Typography variant="h6">{radioQuestions[index]}</Typography>
-                    <PieChart width={730} height={250}>
-                        <Pie data={answer} nameKey="answer" dataKey="number" cx="50%" cy="50%" outerRadius={80} fill="#8884d8" >
-                            {answer.map((entry, index2) => (
-                                <Cell key={`cell-${index2}`} fill={chartColors[index2]} /> // ??????????????????????????????????????
-                            ))}
-                        </Pie>
-                        <Legend />
-                        <Tooltip />
-                    </PieChart>
-                </Card>
-            ))}
-            {openAnswers.map((answer, index) => (
-                <Card styles={{ margin: 10 }}>
-                    <Typography style={{ paddingBottom: 10 }} variant="h6">{openQuestions[index]}</Typography>
-                    {answer.map((a) => (
-                        <li style={{ fontSize: 18 }}>{a}</li>
+        <div>
+            {user ? (
+                <>
+                    <Typography style={{ color: "#ff004c", paddingLeft: 50, paddingBottom: 10 }} variant="h4">{surveyDesc}</Typography>
+                    {radioAnswers.map((answer, index) => (
+                        <Card styles={{ margin: 10 }}>
+                            <Typography variant="h6">{radioQuestions[index]}</Typography>
+                            <PieChart width={730} height={250}>
+                                <Pie data={answer} nameKey="answer" dataKey="number" cx="50%" cy="50%" outerRadius={80} fill="#8884d8" >
+                                    {answer.map((entry, index2) => (
+                                        <Cell key={`cell-${index2}`} fill={chartColors[index2]} /> // ??????????????????????????????????????
+                                    ))}
+                                </Pie>
+                                <Legend />
+                                <Tooltip />
+                            </PieChart>
+                        </Card>
                     ))}
-                </Card>
-            ))}
-
+                    {openAnswers.map((answer, index) => (
+                        <Card styles={{ margin: 10 }}>
+                            <Typography style={{ paddingBottom: 10 }} variant="h6">{openQuestions[index]}</Typography>
+                            {answer.map((a) => (
+                                <li style={{ fontSize: 18 }}>{a}</li>
+                            ))}
+                        </Card>
+                    ))}
+                </>
+            ) : (
+                <div className="access-denied">
+                    <h1 style={{ color: "red" }}>ACCESS DENIED</h1>
+                </div>
+            )}
         </div>
     )
 }

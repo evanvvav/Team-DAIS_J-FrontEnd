@@ -45,7 +45,7 @@ const EditSurveyName = ({ updateSurveyName, surveyDesc }) => {
             <Button style={{ marginLeft: 100 }} variant="outlined" color="primary" size="medium" onClick={handleClickOpen}>
                 Edit name
             </Button>
-            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+            <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm" aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">Edit Survey Name</DialogTitle>
                 <DialogContent>
                     <TextField

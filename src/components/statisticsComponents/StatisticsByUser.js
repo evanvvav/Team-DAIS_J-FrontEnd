@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useParams } from "react-router";
 import { PieChart, Pie, Legend, Tooltip, Cell } from "recharts"
+import authService from "../../services/auth.service";
 import Card from "../Card";
 
 
@@ -13,6 +14,8 @@ const API_SURVEYS = "http://localhost:8080/apisurveys"
 
 const StatisticsByUser = () => {
     const { id } = useParams()
+    const user = authService.getCurrentUser();
+
 
     const [data, setData] = useState([])
     const [surveysData, setSurveysData] = useState([])
@@ -92,24 +95,31 @@ const StatisticsByUser = () => {
 
     return (
         <div style={{ fontSize: 20 }}>
-            <Typography style={{ color: "black", paddingLeft: 50, paddingBottom: 10 }} variant="h4">{data.userName}</Typography>
-            {surveys.map((survey) => (
-                (survey.questionAndAnswers.length === 0 ? (
-                    <div></div>
-                ) : (
-                    <Card styles={{ margin: 10 }}>
-                        <Typography style={{ paddingBottom: 20, color: "#f1356d" }} variant="h4">{survey.survey}</Typography>
-                        {survey.questionAndAnswers.map((QaA) => (
-                            <div style={{ paddingLeft: 15, paddingBottom: 15 }}>
-                                <Typography style={{ paddingBottom: 5 }} variant="h6">{QaA.question}</Typography>
-                                <li>{QaA.answer}</li>
-                            </div>
-                        ))}
-                    </Card>
+            {user ? (
+                <>
+                    <Typography style={{ color: "black", paddingLeft: 50, paddingBottom: 10 }} variant="h4">{data.respondentName}</Typography>
+                    {surveys.map((survey) => (
+                        (survey.questionAndAnswers.length === 0 ? (
+                            <div></div>
+                        ) : (
+                            <Card styles={{ margin: 10 }}>
+                                <Typography style={{ paddingBottom: 20, color: "#ff004c" }} variant="h4">{survey.survey}</Typography>
+                                {survey.questionAndAnswers.map((QaA) => (
+                                    <div style={{ paddingLeft: 15, paddingBottom: 15 }}>
+                                        <Typography style={{ paddingBottom: 5 }} variant="h6">{QaA.question}</Typography>
+                                        <li>{QaA.answer}</li>
+                                    </div>
+                                ))}
+                            </Card>
 
-                ))
-            ))}
-
+                        ))
+                    ))}
+                </>
+            ) : (
+                <div className="access-denied">
+                    <h1 style={{ color: "red" }}>ACCESS DENIED</h1>
+                </div>
+            )}
         </div>
     )
 }

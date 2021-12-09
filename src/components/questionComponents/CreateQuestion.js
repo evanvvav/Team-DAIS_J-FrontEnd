@@ -12,7 +12,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 const CreateQuestion = ({ createNewQuestions }) => {
 
-    // const [surveyName, setSurveyName] = React.useState([]);
     const [open, setOpen] = React.useState(false);
     const [inputFields, setInputFields] = React.useState([
         { id: uuidv4(), question: '', questionType: "radio-button question" }]);
@@ -39,7 +38,7 @@ const CreateQuestion = ({ createNewQuestions }) => {
 
 
     const handleClose = () => {
-        // setInputFields([])
+        setInputFields([{ id: uuidv4(), question: '', questionType: "radio-button question" }])
         setOpen(false);
     };
 
@@ -56,8 +55,8 @@ const CreateQuestion = ({ createNewQuestions }) => {
 
     const CreateNewQuestion = () => {
         createNewQuestions(inputFields);
+        setInputFields([{ id: uuidv4(), question: '', questionType: "radio-button question" }])
         setOpen(false)
-        // setInputFields([])
     }
 
 
@@ -68,7 +67,7 @@ const CreateQuestion = ({ createNewQuestions }) => {
                 Create New Question/s
             </Button>
 
-            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+            <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md" aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">Create New Question</DialogTitle>
                 <DialogContent>
                     {inputFields.map(inputField => (
@@ -83,10 +82,11 @@ const CreateQuestion = ({ createNewQuestions }) => {
                                 fullWidth
                             />
 
-                            <label>Questions Type:</label>
+                            <label style={{ paddingTop: 20, marginRight: 10 }}>Questions Type:</label>
                             <select
                                 name="questionType"
                                 value={inputField.questionType}
+                                style={{ padding: 5, marginRight: 20, marginBottom: 25 }}
                                 onChange={event => handleInputChange(inputField.id, event)}
                             >
                                 <option value="radio-button question" >radio button</option>

@@ -12,16 +12,14 @@ const HomePage = () => {
             <p></p>
 
             <p></p>
-            <h4>too mutch fetch then u put your name</h4>
             <p></p>
 
             <p></p>
-            <h4>How to make openQuestions ul li in statistics</h4>
-            <p></p>
+            <p>make Dialog BIGER??</p>
+            <p>html.ccs ref</p>
+            <p>button logIn change color</p>
+            <p>style or styles????</p>
 
-            <p></p>
-            <h4>surveyList item's text not in centre???</h4>
-            <p></p>
             <p>__________________________________________________</p>
             <h4>ALL RED MASSAGE IN CONSOLE</h4>
             <h4>ALL USELESS IMPORTS</h4>

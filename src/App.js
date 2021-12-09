@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 
 import SurveyList from "./components/surveyComponents/SurveyList";
 
@@ -16,10 +16,12 @@ import BySurveyStatisticsList from "./components/statisticsComponents/BySurveySt
 import StatisticsByUser from "./components/statisticsComponents/StatisticsByUser"
 import ByUserStatisticsList from "./components/statisticsComponents/ByUserStatisticsList"
 import Login from "./components/LoginComponent";
+import authService from "./services/auth.service";
 
 
 
 function App() {
+  const user = authService.getCurrentUser();
 
   return (
     <Router>
@@ -66,7 +68,7 @@ function App() {
           </Switch>
         </div>
       </div>
-    </Router>
+    </Router >
   )
 }
 export default App;

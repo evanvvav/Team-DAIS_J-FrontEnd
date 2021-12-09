@@ -3,8 +3,9 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 
-import AuthService from "../services/auth.service";
-import { TextField } from "@material-ui/core";
+import authService from "../services/auth.service";
+
+
 
 
 const required = value => {
@@ -17,8 +18,10 @@ const required = value => {
   }
 };
 
+const user = authService.getCurrentUser();
+
 export default class Login extends Component {
-  
+
 
   constructor(props) {
     super(props);
@@ -57,9 +60,11 @@ export default class Login extends Component {
     this.form.validateAll();
 
     if (this.checkBtn.context._errors.length === 0) {
-      AuthService.login(this.state.username, this.state.password).then(
+      authService.login(this.state.username, this.state.password).then(
         () => {
           // this.props.history.push("/");
+          // window.location.href = "http://localhost:3000/surveyList"
+          // window.location.replace("http://localhost:3000/surveyList")  NOT WORKING!
           window.location.reload();
         },
         error => {
@@ -85,8 +90,11 @@ export default class Login extends Component {
 
   render() {
     return (
-      <div className="col-md-12">
-        <div className="card card-container">
+
+      // { user ? history.push("/") }
+
+      <div className="logIn-main">
+        <div className="logIn-container">
 
           <Form
             onSubmit={this.handleLogin}
@@ -94,8 +102,8 @@ export default class Login extends Component {
               this.form = c;
             }}
           >
-            <div className="form-group">
-              <label style={{fontSize: 30, color:"#f1356d", padding: 20}} htmlFor="username">Username</label>
+            <div className="logIn-form-group">
+              <label style={{ fontSize: 45, color: "#f1356d", padding: 20 }} htmlFor="username">Username</label>
               <Input
                 type="text"
                 className="form-control"
@@ -103,11 +111,12 @@ export default class Login extends Component {
                 value={this.state.username}
                 onChange={this.onChangeUsername}
                 validations={[required]}
+                autoComplete="off"
               />
             </div>
 
-            <div className="form-group">
-              <label style={{fontSize: 30, color:"#f1356d", padding: 20}} htmlFor="password">Password</label>
+            <div className="logIn-form-group">
+              <label style={{ fontSize: 45, color: "#f1356d", padding: 20 }} htmlFor="password">Password</label>
               <Input
                 type="password"
                 className="form-control"
@@ -115,7 +124,7 @@ export default class Login extends Component {
                 value={this.state.password}
                 onChange={this.onChangePassword}
                 validations={[required]}
-                style={{marginBottom: 20}}
+                style={{ marginBottom: 20 }}
               />
             </div>
 
@@ -139,7 +148,7 @@ export default class Login extends Component {
               </div>
             )}
             <CheckButton
-              style={{ display: "none"}}
+              style={{ display: "none" }}
               ref={c => {
                 this.checkBtn = c;
               }}

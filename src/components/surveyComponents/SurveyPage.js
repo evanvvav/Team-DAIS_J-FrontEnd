@@ -11,10 +11,11 @@ import Button from '@material-ui/core/Button';
 import { useHistory, useParams } from "react-router";
 import useFetch from "../useFetch";
 import { TextField } from "@material-ui/core";
+import authService from "../../services/auth.service";
 
 
 const API_URL = "http://localhost:8080/apisurveys/"
-const API_RESPONDENTS = "http://localhost:8080/apirespondents" 
+const API_RESPONDENTS = "http://localhost:8080/apirespondents"
 const API_SAVE_ALL_RADIO_ANSWERS = "http://localhost:8080/savealluseranswers/"
 const API_SAVE_ALL_OPEN_ANSWERS = "http://localhost:8080/saveallouanswers/"
 
@@ -33,6 +34,8 @@ const useStyles = makeStyles((theme) => ({
 const StartSurvey = ({ name }) => {
     const classes = useStyles()
     const history = useHistory()
+    const user = authService.getCurrentUser();
+
 
     const { id } = useParams()
     const { respondentName } = useParams()
@@ -122,7 +125,7 @@ const StartSurvey = ({ name }) => {
             fetch(API_SAVE_ALL_RADIO_ANSWERS, {
                 method: "POST",
                 headers: {
-                    'Content-type': 'application/json'
+                    'Content-type': 'application/json',
                 },
                 body: JSON.stringify(radioButtonAnswersBody)
             })
@@ -132,7 +135,7 @@ const StartSurvey = ({ name }) => {
             fetch(API_SAVE_ALL_OPEN_ANSWERS, {
                 method: "POST",
                 headers: {
-                    'Content-type': 'application/json'
+                    'Content-type': 'application/json',
                 },
                 body: JSON.stringify(openAnswersBody)
             })
@@ -185,7 +188,6 @@ const StartSurvey = ({ name }) => {
 
                                 ))}
                             </RadioGroup>
-                            {/* <FormHelperText>{helperText}</FormHelperText> */}
                         </>
                     ) : (
                         <>
@@ -198,6 +200,7 @@ const StartSurvey = ({ name }) => {
                                 onChange={e => handleInputChange(e)}
                                 label="Open answer"
                                 style={{ paddingBottom: 25 }}
+                                autoComplete="off"
                                 fullWidth />
                         </>
                     ))

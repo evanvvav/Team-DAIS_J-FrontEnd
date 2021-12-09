@@ -13,6 +13,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditAnswer from "../answerComponents/EditAnswer";
 import CreateAnswer from "../answerComponents/CreateAnswer";
 import { SettingsInputCompositeTwoTone } from "@material-ui/icons";
+import authService from "../../services/auth.service";
 
 
 
@@ -28,6 +29,7 @@ const API_SAVE_ALL_ANSWERS = "http://localhost:8080/saveallanswers"
 
 
 const EditSurvey = ({ updateSurvey }) => {
+    const user = authService.getCurrentUser();
     const { id } = useParams()
     // const { data: surveys, isPending, error } = useFetch(API_URL+survey.surveyID)
     const [questions, setQuestions] = useState([])
@@ -80,7 +82,8 @@ const EditSurvey = ({ updateSurvey }) => {
         fetch(API_SAVE_ALL_QUESTIONS, {
             method: "POST",
             headers: {
-                'Content-type': 'application/json'
+                'Content-type': 'application/json',
+                'Authorization': 'Bearer ' + user.jwt
             },
             body: JSON.stringify(questionListBody)
         }).then(res => getQuestions(API_URL, id))
@@ -88,7 +91,7 @@ const EditSurvey = ({ updateSurvey }) => {
 
     }
 
-    console.log(questions)
+    console.log(user)
 
     const createAnswers = (data) => {
         let answersLength = data.length;
@@ -141,7 +144,8 @@ const EditSurvey = ({ updateSurvey }) => {
         fetch(API_SAVE_ALL_ANSWERS, {
             method: "POST",
             headers: {
-                'Content-type': 'application/json'
+                'Content-type': 'application/json',
+                'Authorization': 'Bearer ' + user.jwt
             },
             body: JSON.stringify(answers)
         }).then(res => getQuestions(API_URL, id))
@@ -150,7 +154,10 @@ const EditSurvey = ({ updateSurvey }) => {
     const deleteSurvey = () => {
         //ask if you are really want to delete
         if (window.confirm("Are you sure?")) {
-            fetch(API_URL + id, { method: "DELETE" })
+            fetch(API_URL + id, {
+                method: "DELETE",
+                headers: { 'Authorization': 'Bearer ' + user.jwt }
+            })
                 .then(res => history.push("/surveyList"))
                 .catch(err => console.error(err))
         }
@@ -159,7 +166,11 @@ const EditSurvey = ({ updateSurvey }) => {
     const deleteQuestion = (delete_id) => {
         //ask if you are really want to delete
         if (window.confirm("Are you sure?")) {
-            fetch(API_URL_QUESTIONS + delete_id, { method: "DELETE" })
+            fetch(API_URL_QUESTIONS + delete_id, {
+                method: "DELETE",
+                headers: { 'Authorization': 'Bearer ' + user.jwt }
+
+            })
                 .then(res => getQuestions(API_URL, id))
                 .catch(err => console.error(err))
         }
@@ -170,7 +181,8 @@ const EditSurvey = ({ updateSurvey }) => {
         fetch(API_URL + id, {
             method: "PUT",
             headers: {
-                'Content-type': 'application/json'
+                'Content-type': 'application/json',
+                'Authorization': 'Bearer ' + user.jwt
             },
             body: JSON.stringify(newSurveyName)
 
@@ -183,7 +195,8 @@ const EditSurvey = ({ updateSurvey }) => {
         fetch(API_URL_QUESTIONS + data.questionID, {
             method: "PUT",
             headers: {
-                'Content-type': 'application/json'
+                'Content-type': 'application/json',
+                'Authorization': 'Bearer ' + user.jwt
             },
             body: JSON.stringify({
                 "question": question,
@@ -200,7 +213,8 @@ const EditSurvey = ({ updateSurvey }) => {
         fetch(API_URL_ANSWER + data.answerID, {
             method: "PUT",
             headers: {
-                'Content-type': 'application/json'
+                'Content-type': 'application/json',
+                'Authorization': 'Bearer ' + user.jwt
             },
             body: JSON.stringify({
                 "question": { "questionID": questionID },
@@ -268,18 +282,24 @@ const EditSurvey = ({ updateSurvey }) => {
 
 
     return (
+        <div>
+            {user ? (
+                <>
+                    <div className="edit-survey-page-header" style={{ display: "flex", alignItems: "center", justifyContent: "center", paddingBottom: "20px" }}>
+                        <CreateQuestion createNewQuestions={createNewQuestions} />
+                        <CreateAnswer createAnswers={createAnswers} />
+                        <h2>{surveyDesc}</h2>
+                        <EditSurveyName updateSurveyName={updateSurveyName} surveyDesc={surveyDesc} />
+                        <Button color="secondary" variant="outlined" size="medium" onClick={() => deleteSurvey()}>Delete survey</Button>
+                    </div>
 
-        <div className="edit-survey-page">
-            <div className="edit-survey-page-header" style={{ display: "flex", alignItems: "center", justifyContent: "center", paddingBottom: "20px" }}>
-                <CreateQuestion createNewQuestions={createNewQuestions} />
-                <CreateAnswer createAnswers={createAnswers} />
-                <h2>{surveyDesc}</h2>
-                <EditSurveyName updateSurveyName={updateSurveyName} surveyDesc={surveyDesc} />
-                <Button color="secondary" variant="outlined" size="medium" onClick={() => deleteSurvey()}>Delete survey</Button>
-            </div>
-            {/* { error && <div>{ error }</div> } */}
-            {/* { isPending && <div>Loading...</div> } */}
-            <ReactTable filterable={true} data={questions} columns={columns} style={{ marginTop: 10, textAlign: "center" }} />
+                    <ReactTable filterable={true} data={questions} columns={columns} style={{ marginTop: 10, textAlign: "center" }} />
+                </>
+            ) : (
+                <div className="access-denied">
+                    <h1 style={{ color: "red" }}>ACCESS DENIED</h1>
+                </div>
+            )}
         </div>
 
     )

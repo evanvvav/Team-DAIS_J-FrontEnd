@@ -10,7 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 
-const CreateAnswer= ({ createAnswers }) => {
+const CreateAnswer = ({ createAnswers }) => {
 
     // const [surveyName, setSurveyName] = React.useState([]);
     const [open, setOpen] = React.useState(false);
@@ -39,13 +39,13 @@ const CreateAnswer= ({ createAnswers }) => {
 
 
     const handleClose = () => {
-        // setInputFields([])
+        setInputFields([{ id: uuidv4(), answer: '' }])
         setOpen(false);
     };
 
 
     const handleAddFields = () => {
-        setInputFields([...inputFields, { id: uuidv4(), answer: ''}])
+        setInputFields([...inputFields, { id: uuidv4(), answer: '' }])
     }
 
     const handleRemoveFields = id => {
@@ -55,9 +55,9 @@ const CreateAnswer= ({ createAnswers }) => {
     }
 
     const CreateNewQuestion = () => {
-        createAnswers(inputFields);
+        createAnswers(inputFields)
+        setInputFields([{ id: uuidv4(), answer: '' }])
         setOpen(false)
-        // setInputFields([])
     }
 
 
@@ -68,12 +68,12 @@ const CreateAnswer= ({ createAnswers }) => {
                 Create Answer/s
             </Button>
 
-            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                <DialogTitle id="form-dialog-title" style={{display: "flex"}}>
-                    <h2 style={{color: "red"}}>ATTENTION</h2>
+            <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm" aria-labelledby="form-dialog-title">
+                <DialogTitle id="form-dialog-title" style={{ display: "flex" }}>
+                    <h2 style={{ color: "red" }}>ATTENTION</h2>
                     <p>Enter all answers. They will be added to the first free cells in turn.</p>
-                
-                
+
+
                 </DialogTitle>
                 <DialogContent>
                     {inputFields.map(inputField => (
@@ -87,9 +87,9 @@ const CreateAnswer= ({ createAnswers }) => {
                                 label="Answer"
                                 fullWidth
                             />
-                           
-                            <Button disabled={inputFields.length === 1} onClick={() => handleRemoveFields(inputField.id)}>Remove</Button>
-                            <Button onClick={handleAddFields}>add</Button>
+
+                            <Button style={{ marginBottom: 20 }} disabled={inputFields.length === 1} onClick={() => handleRemoveFields(inputField.id)}>Remove</Button>
+                            <Button style={{ marginBottom: 20 }} onClick={handleAddFields}>add</Button>
                         </div>
                     ))}
                 </DialogContent>

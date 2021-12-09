@@ -6,7 +6,6 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import EditIcon from '@material-ui/icons/Edit';
 
 const API = "http://localhost:8080/apirespondents/"
 
@@ -36,6 +35,7 @@ export default function StartSurvey({ startSurvey, id }) {
 
     const handleClose = () => {
         setOpen(false);
+        setName("")
     };
 
 
@@ -75,7 +75,7 @@ export default function StartSurvey({ startSurvey, id }) {
             fetch(API, {
                 method: "POST",
                 headers: {
-                    'Content-type': 'application/json'
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
                     "respondentName": name
@@ -84,19 +84,20 @@ export default function StartSurvey({ startSurvey, id }) {
 
             startSurvey(id, name)
             handleClose();
+
         }
 
     }
 
 
-   
+
 
     return (
         <div>
-            <Button style={{ margin: 10 }} variant="outlined" color="primary" size="small" onClick={handleClickOpen}>
+            <Button style={{ margin: 10 }} variant="outlined" color="primary" size="large" onClick={handleClickOpen}>
                 Start
             </Button>
-            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+            <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm" aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">Enter your name</DialogTitle>
                 <DialogContent>
                     <TextField
@@ -107,6 +108,7 @@ export default function StartSurvey({ startSurvey, id }) {
                         onChange={e => handleInputChange(e)}
                         label="Name"
                         fullWidth
+                        autoComplete="off"
                     />
                 </DialogContent>
                 <DialogActions>

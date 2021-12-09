@@ -45,7 +45,7 @@ export default function EditQuestion({ updateQuestion, data }) {
             <Button variant="outlined" color="primary" size="small" onClick={handleClickOpen}>
                 <EditIcon />
             </Button>
-            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+            <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm" aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">Edit Question</DialogTitle>
                 <DialogContent>
 
