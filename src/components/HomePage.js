@@ -10,8 +10,10 @@ const HomePage = () => {
                 <p>User can only answer and submit the survey questions</p>
             </div>
             <div className="home-contacts">
-                <p> Contact information: info@DAIS_J.com</p>
-                <p> Programmers: Yulia Kokorieva, Senja Ihalainen, Dmitry Sinyavskiy, Sakariye Aden, Ivan Kolesov</p>
+                <div><p> Contact information:
+                    <span className="contacts-text">info@DAIS_J.com</span></p></div>
+                <div><p> Programmers:
+                    <span className="contacts-text">Yulia Kokorieva, Senja Ihalainen, Dmitry Sinyavskiy, Sakariye Aden, Ivan Kolesov</span></p></div>
             </div>
 
         </div>

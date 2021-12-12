@@ -52,8 +52,14 @@
   padding: 0.25rem 0rem;
 }
 .home-contacts{
-position: absolute;
-bottom: 25px;
+  position: absolute;
+  bottom: 25px;
+  display: block;
+}
+
+.contacts-text{
+  color: #f1356d;
+  padding-left: 1rem;
 }
 
 /* survey previews / list */
@@ -117,9 +123,6 @@ bottom: 25px;
   cursor: pointer;
 }
 
-/* survey details page */
-/* '
-' */
 
 
 
