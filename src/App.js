@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from "react"
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import React from "react"
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import SurveyList from "./components/surveyComponents/SurveyList";
-
 import Navbar from "./components/Navbar";
 import NotFound from "./components/NotFound"
-
 import EditSurvey from "./components/surveyComponents/EditSurvey";
 import HomePage from "./components/HomePage"
 import CreateSurvey from "./components/surveyComponents/CreateSurvey";
@@ -16,12 +14,10 @@ import BySurveyStatisticsList from "./components/statisticsComponents/BySurveySt
 import StatisticsByUser from "./components/statisticsComponents/StatisticsByUser"
 import ByUserStatisticsList from "./components/statisticsComponents/ByUserStatisticsList"
 import Login from "./components/LoginComponent";
-import authService from "./services/auth.service";
 
 
 
 function App() {
-  const user = authService.getCurrentUser();
 
   return (
     <Router>
@@ -35,7 +31,7 @@ function App() {
             <Route exact path="/surveyList">
               <SurveyList />
             </Route>
-            <Route path="/survey/:id/:userName">
+            <Route path="/survey/:id/:respondentName">
               <SurveyPage />
             </Route>
             <Route path="/createSurvey">

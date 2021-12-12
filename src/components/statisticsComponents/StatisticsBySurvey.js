@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useParams } from "react-router";
 import { PieChart, Pie, Legend, Tooltip, Cell } from "recharts"
+
 import authService from "../../services/auth.service";
 import Card from "../Card";
 

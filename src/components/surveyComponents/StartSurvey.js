@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -46,12 +45,11 @@ export default function StartSurvey({ startSurvey, id }) {
     const start = () => {
         let freeName = true;
 
-        // A LOT OF FETCH, EACH TIME THEN U TYPE A TEXT ????????????????????????????????????????????????????????????????????
 
         for (let i = 0; i < users.length; i++) {
             if (users[i].respondentName === name) {
                 freeName = false
-                if (users[i].userAnswers.length === 0) { /// to change???????????????????????????????????????????????????
+                if (users[i].userAnswers.length === 0) {
                     startSurvey(id, name)
                     handleClose();
                     break
@@ -63,10 +61,6 @@ export default function StartSurvey({ startSurvey, id }) {
                     handleClose();
                     break
                 }
-
-                // alert("This name is already registered, please choose another")
-                // freeName = false
-                // break
             }
 
         }

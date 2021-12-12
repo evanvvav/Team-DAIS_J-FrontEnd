@@ -22,6 +22,12 @@
 }
 .navbar .login {
   margin-left: auto;
+  display: flex;
+}
+.login h2{
+  margin: 0;
+  margin-top: 5px;
+  color: rgb(118, 118, 206);
 }
 .navbar a {
   margin-left: 16px;
@@ -35,6 +41,19 @@
   max-width: 95%;
   margin: 40px auto;
   padding: 20px;
+}
+
+/* Home page */
+/* .home{
+  display:block
+} */
+.home-info p{
+  font-size: 20px;
+  padding: 0.25rem 0rem;
+}
+.home-contacts{
+position: absolute;
+bottom: 25px;
 }
 
 /* survey previews / list */
@@ -143,6 +162,8 @@
   border: 1px solid #ddd;
   box-sizing: border-box;
   display: block;
+  width: 400px;
+  font-size: 25px;
 }
 .create button {
   background: #f1356d;
@@ -151,6 +172,7 @@
   padding: 8px;
   border-radius: 8px;
   cursor: pointer;
+  font-size: 22px;
 }
 
 
@@ -166,7 +188,7 @@
 
 /* logIn page */
 .logIn-main{
-  max-width: 500px;
+  max-width: 400px;
   margin: 0 auto;
   text-align: center;
 }
@@ -175,5 +197,12 @@
   margin-bottom: 10px;
 }
 .logIn-form-group input{
-  font-size: 30px;
+  font-size: 15px;
+  text-align: center;
+}
+
+.logIn-container Button{
+  font-size: 15px;
+  background-color: #f1356d;
+  border: none;
 }

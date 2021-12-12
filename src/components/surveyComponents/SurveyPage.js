@@ -5,19 +5,17 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormLabel from '@material-ui/core/FormLabel';
 import Button from '@material-ui/core/Button';
 import { useHistory, useParams } from "react-router";
-import useFetch from "../useFetch";
 import { TextField } from "@material-ui/core";
-import authService from "../../services/auth.service";
+
 
 
 const API_URL = "http://localhost:8080/apisurveys/"
 const API_RESPONDENTS = "http://localhost:8080/apirespondents"
-const API_SAVE_ALL_RADIO_ANSWERS = "http://localhost:8080/savealluseranswers/"
-const API_SAVE_ALL_OPEN_ANSWERS = "http://localhost:8080/saveallouanswers/"
+const API_SAVE_ALL_RADIO_ANSWERS = "http://localhost:8080/savealluseranswers"
+const API_SAVE_ALL_OPEN_ANSWERS = "http://localhost:8080/saveallouanswers"
 
 
 
@@ -34,20 +32,16 @@ const useStyles = makeStyles((theme) => ({
 const StartSurvey = ({ name }) => {
     const classes = useStyles()
     const history = useHistory()
-    const user = authService.getCurrentUser();
 
 
     const { id } = useParams()
     const { respondentName } = useParams()
-    // const { data, isPending, error } = useFetch(API_URL+id) ??????????????????????????
 
 
     const [questions, setQuestions] = useState([])
     const [answers, setAnswers] = useState([])
     const [respondents, setRespondents] = useState([])
     const [value, setValue] = React.useState([])
-    const [error, setError] = React.useState(false)
-    // const [helperText, setHelperText] = React.useState('Choose wisely')
 
 
 
@@ -78,11 +72,9 @@ const StartSurvey = ({ name }) => {
     const handleRadioChange = (event) => {
         setValue([...value, event.target.value]);
         setAnswers({ ...answers, [event.target.name]: event.target.value })
-        // setHelperText(' ');
     };
 
     const handleInputChange = (e) => {
-        // e.preventdefault()
         setAnswers({ ...answers, [e.target.name]: e.target.value })
     }
 
@@ -125,7 +117,7 @@ const StartSurvey = ({ name }) => {
             fetch(API_SAVE_ALL_RADIO_ANSWERS, {
                 method: "POST",
                 headers: {
-                    'Content-type': 'application/json',
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(radioButtonAnswersBody)
             })
@@ -135,7 +127,7 @@ const StartSurvey = ({ name }) => {
             fetch(API_SAVE_ALL_OPEN_ANSWERS, {
                 method: "POST",
                 headers: {
-                    'Content-type': 'application/json',
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(openAnswersBody)
             })
@@ -160,10 +152,10 @@ const StartSurvey = ({ name }) => {
     }
 
 
-    const getRespondentID = (name) => {
+    const getRespondentID = (respondentName) => {
         let respondentID = 0
-        respondents.map((respondent) => { /// HOW TO MAKE IT BETTER?????????????????????????????????????????????????????????????????????????????
-            if (respondent.respondentName === name) {
+        respondents.map((respondent) => {
+            if (respondent.respondentName === respondentName) {
                 respondentID = respondent.respondentID
             }
         })
@@ -172,11 +164,10 @@ const StartSurvey = ({ name }) => {
 
 
 
-
     return (
 
         <form onSubmit={handleSubmit}>
-            <FormControl component="fieldset" error={error} className={classes.formControl}>
+            <FormControl component="fieldset" className={classes.formControl}>
                 {questions.map((question, index) => (
                     (question.questionType === "radio-button question" ? (
                         <><FormLabel style={{ paddingBottom: 2, color: "black", fontSize: 23 }} component="legend" key={question.questionID}>{question.question}</FormLabel>
@@ -191,7 +182,7 @@ const StartSurvey = ({ name }) => {
                         </>
                     ) : (
                         <>
-                            <FormLabel style={{ color: "black", fontSize: 23 }}>{question.question}</FormLabel>
+                            <FormLabel style={{ color: "black", fontSize: 23 }} key={question.questionID}>{question.question}</FormLabel>
                             <TextField
                                 required
                                 margin="dense"

@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from "react";
-
-import ReactTable from "react-table";
+import React, { useEffect, useState } from "react"
+import ReactTable from "react-table"
 import 'react-table/react-table.css';
+import { useHistory } from "react-router"
+import { Button } from "@material-ui/core"
 
-import { useHistory } from "react-router";
-import { Last } from "react-bootstrap/esm/PageItem";
-import StatisticsBySurvey from "./StatisticsBySurvey";
-import { Button, TextField } from "@material-ui/core"
-import authService from "../../services/auth.service";
+import authService from "../../services/auth.service"
 
 
 const API_URL = "http://localhost:8080/apirespondents"
@@ -64,7 +61,6 @@ const ByUserStatistics = () => {
         }
     ]
 
-    console.log(users)
 
     return (
 

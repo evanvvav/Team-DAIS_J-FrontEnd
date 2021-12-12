@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from "react";
-import useFetch from "../useFetch"
-import ReactTable from "react-table";
-import 'react-table/react-table.css';
 import { Button } from "@material-ui/core"
 import { useHistory } from "react-router";
-import EditSurvey from "./EditSurvey"
-import StartSurvey from "./StartSurvey";
-import { Last } from "react-bootstrap/esm/PageItem";
-import authService from "../../services/auth.service";
-import { Link } from "react-router-dom";
+
 import Card from "../Card";
+import StartSurvey from "./StartSurvey";
+import authService from "../../services/auth.service";
 
 
 
@@ -65,7 +60,7 @@ const SurveysList = () => {
 
         <div>
             {surveys.map((survey) => (
-                <Card styles={{ margin: 25 }} >
+                <Card styles={{ margin: 25 }} key={survey.surveyID}>
                     <div className="survey-list">
                         <div className="info">
                             <StartSurvey startSurvey={startSurvey} id={survey.surveyID} />

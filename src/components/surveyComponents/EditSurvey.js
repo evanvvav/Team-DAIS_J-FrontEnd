@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from "react";
-import useFetch from "../useFetch"
 import ReactTable from "react-table";
 import 'react-table/react-table.css';
-import { Button, TextField } from "@material-ui/core"
+import { Button } from "@material-ui/core"
 import { useHistory, useParams } from "react-router";
+import DeleteIcon from '@material-ui/icons/Delete';
+
 import EditQuestion from "../questionComponents/EditQuestion";
-import Navbar from "../Navbar";
-import UpdateSurveyName from "./EditSurveyName";
 import CreateQuestion from "../questionComponents/CreateQuestion";
 import EditSurveyName from "./EditSurveyName";
-import DeleteIcon from '@material-ui/icons/Delete';
 import EditAnswer from "../answerComponents/EditAnswer";
 import CreateAnswer from "../answerComponents/CreateAnswer";
-import { SettingsInputCompositeTwoTone } from "@material-ui/icons";
 import authService from "../../services/auth.service";
 
 
@@ -31,10 +28,8 @@ const API_SAVE_ALL_ANSWERS = "http://localhost:8080/saveallanswers"
 const EditSurvey = ({ updateSurvey }) => {
     const user = authService.getCurrentUser();
     const { id } = useParams()
-    // const { data: surveys, isPending, error } = useFetch(API_URL+survey.surveyID)
     const [questions, setQuestions] = useState([])
     const [surveyDesc, setSurveyDesc] = useState("")
-    // const [questionsList, setQuestionsList] = useState([])
 
     const history = useHistory();
 
@@ -58,7 +53,6 @@ const EditSurvey = ({ updateSurvey }) => {
                     }
                 }
 
-                console.log(openQuestions)
 
                 setQuestions([...radioQuestions, ...openQuestions])
                 setSurveyDesc(data.surveyDesc)
@@ -91,15 +85,15 @@ const EditSurvey = ({ updateSurvey }) => {
 
     }
 
-    console.log(user)
 
-    const createAnswers = (data) => {
+    const createNewAnswers = (data) => {
         let answersLength = data.length;
         let answersListBody = []
         let answerNumber = 0;
         let questionNumber = 0;
         let maxQuestionLength = questions.length
         let freeCellNumber = 0;
+        let openAnswerCheck = false
 
 
         if (data[0].answer === "") {
@@ -110,35 +104,41 @@ const EditSurvey = ({ updateSurvey }) => {
         while (answerNumber < answersLength) {
 
             while (questionNumber < (maxQuestionLength)) {
-                freeCellNumber = 3 - questions[questionNumber].answers.length
-                if (freeCellNumber > 0) {
+                if (questions[questionNumber].questionType === "open question") {
+                    alert("You can't add answers to Open Question!")
+                    answerNumber = answersLength
+                    openAnswerCheck = true
                     break
                 } else {
-                    questionNumber++
+                    freeCellNumber = 3 - questions[questionNumber].answers.length
+                    if (freeCellNumber > 0) {
+                        break
+                    } else {
+                        questionNumber++
+                    }
                 }
             }
 
-            // if (freeCellNumber === 0) {
-            //     alert("No free cell for answer")
-            //     break
-            // }
-
-            for (let w = 0; w < freeCellNumber; w++) {
-                answersListBody.push({
-                    "question": { "questionID": questions[questionNumber].questionID },
-                    "answer": data[answerNumber].answer
-                })
-                answerNumber++
-                if (answerNumber === answersLength || answerNumber > answersLength) {
-                    break
+            if (!openAnswerCheck) {
+                for (let w = 0; w < freeCellNumber; w++) {
+                    answersListBody.push({
+                        "question": { "questionID": questions[questionNumber].questionID },
+                        "answer": data[answerNumber].answer
+                    })
+                    answerNumber++
+                    if (answerNumber === answersLength || answerNumber > answersLength) {
+                        break
+                    }
                 }
             }
             questionNumber++
+
         }
-
         addAnswersToQusetion(answersListBody)
-
     }
+
+
+
 
     const addAnswersToQusetion = (answers) => {
         fetch(API_SAVE_ALL_ANSWERS, {
@@ -227,7 +227,6 @@ const EditSurvey = ({ updateSurvey }) => {
     }
 
 
-    console.log(questions)
 
     const columns = [
         {
@@ -287,7 +286,7 @@ const EditSurvey = ({ updateSurvey }) => {
                 <>
                     <div className="edit-survey-page-header" style={{ display: "flex", alignItems: "center", justifyContent: "center", paddingBottom: "20px" }}>
                         <CreateQuestion createNewQuestions={createNewQuestions} />
-                        <CreateAnswer createAnswers={createAnswers} />
+                        <CreateAnswer createAnswers={createNewAnswers} />
                         <h2>{surveyDesc}</h2>
                         <EditSurveyName updateSurveyName={updateSurveyName} surveyDesc={surveyDesc} />
                         <Button color="secondary" variant="outlined" size="medium" onClick={() => deleteSurvey()}>Delete survey</Button>

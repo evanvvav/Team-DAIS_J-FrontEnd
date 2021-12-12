@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
+
 import authService from "../../services/auth.service";
 
 const CreateSurvey = () => {
@@ -35,7 +36,7 @@ const CreateSurvey = () => {
             <input
               type="text"
               required
-              style={{ width: "400px" }}
+              style={{}}
               value={name}
               onChange={(e) => setName(e.target.value)}
             />

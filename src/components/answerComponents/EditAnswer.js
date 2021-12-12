@@ -49,6 +49,7 @@ const EditAnswer = ({ updateAnswer, data, questionID }) => {
                         onChange={e => handleInputChange(e)}
                         label="Answer"
                         fullWidth
+                        autoComplete="off"
                     />
                 </DialogContent>
                 <DialogActions>

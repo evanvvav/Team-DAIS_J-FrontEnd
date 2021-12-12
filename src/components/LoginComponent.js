@@ -18,7 +18,6 @@ const required = value => {
   }
 };
 
-const user = authService.getCurrentUser();
 
 export default class Login extends Component {
 
@@ -103,7 +102,7 @@ export default class Login extends Component {
             }}
           >
             <div className="logIn-form-group">
-              <label style={{ fontSize: 45, color: "#f1356d", padding: 20 }} htmlFor="username">Username</label>
+              <label style={{ fontSize: 25, color: "#f1356d", padding: 20 }} htmlFor="username">Username</label>
               <Input
                 type="text"
                 className="form-control"
@@ -116,7 +115,7 @@ export default class Login extends Component {
             </div>
 
             <div className="logIn-form-group">
-              <label style={{ fontSize: 45, color: "#f1356d", padding: 20 }} htmlFor="password">Password</label>
+              <label style={{ fontSize: 25, color: "#f1356d", padding: 20 }} htmlFor="password">Password</label>
               <Input
                 type="password"
                 className="form-control"
