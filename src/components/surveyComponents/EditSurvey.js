@@ -72,6 +72,7 @@ const EditSurvey = ({ updateSurvey }) => {
                 "questionType": data[i].questionType
             })
         }
+
         //add question/s to DB
         fetch(API_SAVE_ALL_QUESTIONS, {
             method: "POST",

@@ -21,7 +21,6 @@ const CreateSurvey = () => {
       },
       body: JSON.stringify(name)
     }).then(() => {
-      // history.go(-1);
       history.push('/surveyList');
     })
   }

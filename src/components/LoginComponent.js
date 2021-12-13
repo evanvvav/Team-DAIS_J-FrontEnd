@@ -89,9 +89,6 @@ export default class Login extends Component {
 
   render() {
     return (
-
-      // { user ? history.push("/") }
-
       <div className="logIn-main">
         <div className="logIn-container">
 

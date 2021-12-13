@@ -12,12 +12,9 @@ import { v4 as uuidv4 } from 'uuid';
 
 const CreateAnswer = ({ createAnswers }) => {
 
-    // const [surveyName, setSurveyName] = React.useState([]);
     const [open, setOpen] = React.useState(false);
     const [inputFields, setInputFields] = React.useState([
         { id: uuidv4(), answer: '' }]);
-
-
 
 
     const handleClickOpen = () => {
